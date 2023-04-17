@@ -8,7 +8,7 @@ struct EmuContext
 {
     bool paused;
     bool running;
-
+    u64 ticks;
 };
 
 int emuRun(int argc, int **argv);
