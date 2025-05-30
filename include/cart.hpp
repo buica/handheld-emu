@@ -3,6 +3,7 @@
 
 #include "common.hpp"
 
+// Taken straight from pan docs
 // cartridge headers (check out pan docs for full info)
 // header located at address range $0100 - $014F
 struct RomHeader
