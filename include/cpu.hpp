@@ -2,23 +2,34 @@
 #define CPU_HPP
 
 #include "common.hpp"
-struct CpuRegisters
-{
-   u8 a; // accumulator
-   u8 b;
-   u8 c;
-   u8 d;
-   u8 e;
-   u8 h;
-   u8 l;
-   u16 sp; // stack pointer
-   u16 pc; // program counter
-};
+
+//to do:
+// read more about z80/8080 cpu architecture
+// implement constants
+// implement isa gradually, high priority opcodes first
+// use blarg's test roms to test
+
+
+class CPU {
+public:
+
+
+private:
+   u8 regA; // accumulator
+   u8 regB;
+   u8 regC;
+   u8 regD;
+   u8 regE;
+   u8 regH;
+   u8 regL;
+   u16 stackPtr;
+   u16 progCounter;
+
 
 // todos:
 // add z80 cpu instruction set
 // add cpu flags
 // implement cpu fetch/decode/execute cycle
 
-
+};
 #endif
