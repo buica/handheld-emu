@@ -1,14 +1,14 @@
 #include "include/cpu.hpp"
+#include <iostream>
 
 void cpuInit()
 {
     // todo
-    printf("cpuInit needs to be implemented\n");
-    return false;
+    std::cout << "cpuInit needs to be implemented" << std::endl;
 }
 
 bool cpuStep()
 {
-    printf("cpuStep needs to be implemented\n");
+    std::cout << "cpuStep needs to be implemented" << std::endl;
     return false;
 }

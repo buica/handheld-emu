@@ -1,6 +1,7 @@
 #ifndef COMMON_HPP
 #define COMMON_HPP
 
+#include <cstdint>
 
 //todo
 // add more shared headers if needed
