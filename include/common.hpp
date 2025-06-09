@@ -2,6 +2,7 @@
 #define COMMON_HPP
 
 #include <cstdint>
+#include <string>
 
 //todo
 // add more shared headers if needed

@@ -3,7 +3,10 @@
 
 #include "common.hpp"
 
-// Taken straight from pan docs
+// To-Do
+// boot up blargg's test roms
+//
+//
 // cartridge headers (check out pan docs for full info)
 // header located at address range $0100 - $014F
 struct RomHeader

@@ -18,43 +18,46 @@ private:
 
 // Unions allocate space for largest member and all members share memory
 // when we set AF, F and A will give us corresponding bytes
-union {
-    u16 AF;
-    struct {
-        u8 Flags; // Gameboy is Little Endian, least significant byte stores in lowest memory address
-        u8 A;
-    };
-};
+    union {
+        u16 AF;
+        struct {
+            u8 F; // Little Endian, least significant byte stores in lowest memory address
+            u8 A; // high byte
+        };
+    } regAF;
 
-union {
-    u16 BC;
-    struct {
-        u8 C;
-        u8 B;
-    };
-};
+    union {
+        u16 BC;
+        struct {
+            u8 C;
+            u8 B;
+        };
+    } regBC;
 
-union {
-    u16 DE;
-    struct {
-        u8 E;
-        u8 D;
-    };
-};
+    union {
+        u16 DE;
+        struct {
+            u8 E;
+            u8 D;
+        };
+    } regDE;
 
-union {
-    u16 HL;
-    struct {
-        u8 L;
-        u8 H;
-    };
-};
+    union {
+        u16 HL;
+        struct {
+            u8 L;
+            u8 H;
+        };
+    } regHL;
 
-u16 SP; // stack pointer
-u16 PC; // program counter
+    u16 SP; // stack pointer
+    u16 PC; // program counter
 
 public:
-
+    CPU();
+    u8& getA();
+    u8& getF();
+    u16& getAF();
 
 };
 #endif
