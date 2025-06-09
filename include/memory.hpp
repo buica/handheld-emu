@@ -2,8 +2,9 @@
 #define MEMORY_HPP
 
 #include "common.hpp"
+#include <array>
 
-//Memory class will act as our emulator's memory bus and
+// Memory class will act as our emulator's memory bus and
 // bus controller, handling memory access and communication between the CPU and PPU.
 //
 
@@ -17,8 +18,8 @@ constexpr u32 DMG_ADDRESS_SPACE_SIZE = 0x10000; // Gameboy total addressable spa
 
 class Memory {
 private:
-    u8 dmgMemory[DMG_ADDRESS_SPACE_SIZE]; // will hold all our gameboy's addressable memory space
-
+    //u8 dmgMemory[DMG_ADDRESS_SPACE_SIZE];
+    std::array<u8, DMG_ADDRESS_SPACE_SIZE> dmgMemory; // will hold all our gameboy's addressable memory space
 public:
     Memory();
     u8 readByte(u16 address);
