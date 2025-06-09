@@ -11,25 +11,50 @@
 
 
 class CPU {
+private:
+// CPU Registers
+// We need to be able to access same registers as 16bit regsters and 2 separate 8bit registers
+// Using unions along with grouping the 8bit regs in structs will allow this behavior
+
+// Unions allocate space for largest member and all members share memory
+// when we set AF, F and A will give us corresponding bytes
+union {
+    u16 AF;
+    struct {
+        u8 Flags; // Gameboy is Little Endian, least significant byte stores in lowest memory address
+        u8 A;
+    };
+};
+
+union {
+    u16 BC;
+    struct {
+        u8 C;
+        u8 B;
+    };
+};
+
+union {
+    u16 DE;
+    struct {
+        u8 E;
+        u8 D;
+    };
+};
+
+union {
+    u16 HL;
+    struct {
+        u8 L;
+        u8 H;
+    };
+};
+
+u16 SP; // stack pointer
+u16 PC; // program counter
+
 public:
 
-
-private:
-   u8 regA; // accumulator
-   u8 regB;
-   u8 regC;
-   u8 regD;
-   u8 regE;
-   u8 regH;
-   u8 regL;
-   u16 stackPtr;
-   u16 progCounter;
-
-
-// todos:
-// add z80 cpu instruction set
-// add cpu flags
-// implement cpu fetch/decode/execute cycle
 
 };
 #endif

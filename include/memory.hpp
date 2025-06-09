@@ -4,9 +4,21 @@
 
 //Memory class will act as our emulator's memory bus and
 // bus controller, handling memory access and communication between the CPU and PPU.
-// It will also manage memory mapping and provide access to various memory regions such as ROM, RAM, and I/O registers.
 //
-//
+
+//To-do:
+// - implement memory mapping
+// - implement basic memory operations
+// LATER: we should probably create a SERIAL class to optimize serial communication to/from peripherals.
+
+
+class Memory {
+private:
+
+
+public:
+
+};
 
 
 #endif
