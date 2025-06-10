@@ -59,6 +59,7 @@ public:
     u8 fetchInstruction(Memory& memory);
     void decodeInstruction();
     void executeInstruction(Memory& memory);
+    void printCPU();
     void reset();
     u8& getA();
     u8& getF();

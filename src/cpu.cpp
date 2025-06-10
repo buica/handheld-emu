@@ -24,6 +24,15 @@ u16& CPU::getAF() {
     return regAF.AF;
 }
 
+void CPU::printCPU() {
+    std::clog << "CPU State:" << std::endl;
+    std::clog << "AF: " << std::hex << getAF() << std::endl;
+    std::clog << "BC: " << std::hex << regBC.BC << std::endl;
+    std::clog << "DE: " << std::hex << regDE.DE << std::endl;
+    std::clog << "HL: " << std::hex << regHL.HL << std::endl;
+    std::clog << "SP: " << std::hex << SP << std::endl;
+    std::clog << "PC: " << std::hex << PC << std::endl;
+}
 
 u8 CPU::fetchInstruction(Memory& memory) {
     // get the opcode and increment PC
@@ -62,9 +71,6 @@ void CPU::executeInstruction(Memory& memory) {
             break;
     }
 
-    // execute
-    //
-    //
 }
 
 
