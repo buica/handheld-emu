@@ -23,6 +23,7 @@ private:
 public:
     Memory();
     u8 readByte(u16 address);
+    u16 readWord(u16 address);
     void writeByte(u16 address, u8 value);
     void loadRom(const std::string& filepath);
 };

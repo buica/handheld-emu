@@ -5,12 +5,12 @@
 
 Memory::Memory() {
     // Initialize memory here
+
 }
 
+// Read byte from memory at given address
+// Use pan docs memory map for behavior
 u8 Memory::readByte(u16 address) {
-    // Read byte from memory at given address
-    // Use pan docs memory map for behavior
-    //
     if (address >= 0x0000 && address <= 0x3FFF) {
         // 16 KiB ROM bank 00
         return dmgMemory[address]; // from cart, usually fixed bank
@@ -63,8 +63,15 @@ u8 Memory::readByte(u16 address) {
     }
 }
 
+// Return 16bit value from memory at given address where
+u16 Memory::readWord(u16 address) {
+    u8 low = readByte(address);
+    u8 high = readByte(address + 1); // Little Endian
+    return (high << 8) | low;
+}
+
+// Write byte to memory at given address
 void Memory::writeByte(u16 address, u8 value) {
-    // Write byte to memory at given address
     if (address >= 0x0000 && address <= 0x3FFF) {
         // 16 KiB ROM bank 00
         dmgMemory[address] = value; // from cart, usually fixed bank

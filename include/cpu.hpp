@@ -2,6 +2,7 @@
 #define CPU_HPP
 
 #include "common.hpp"
+#include "memory.hpp"
 
 //to do:
 // read more about z80/8080 cpu architecture
@@ -55,6 +56,10 @@ private:
 
 public:
     CPU();
+    u8 fetchInstruction(Memory& memory);
+    void decodeInstruction();
+    void executeInstruction(Memory& memory);
+    void reset();
     u8& getA();
     u8& getF();
     u16& getAF();
