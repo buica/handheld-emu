@@ -9,12 +9,12 @@
 //
 
 //To-do:
-// - implement memory mapping
-// - implement basic memory operations
+// - [x] implement memory mapping
+// - [x] implement basic memory operations
+// - [x] work more on loadRom()
 // LATER: we should probably create a SERIAL class to optimize serial communication to/from peripherals.
 
 constexpr u32 DMG_ADDRESS_SPACE_SIZE = 0x10000; // Gameboy total addressable space = 64KiB
-
 
 class Memory {
 private:
@@ -25,8 +25,6 @@ public:
     u8 readByte(u16 address);
     u16 readWord(u16 address);
     void writeByte(u16 address, u8 value);
-    void loadRom(const std::string& filepath);
 };
-
 
 #endif

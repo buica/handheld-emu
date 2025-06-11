@@ -54,6 +54,8 @@ private:
     u16 SP; // stack pointer
     u16 PC; // program counter
 
+    u8 cycles;
+
 public:
     CPU();
     u8 fetchInstruction(Memory& memory);

@@ -4,9 +4,12 @@
 #include "common.hpp"
 
 // To-Do
-// boot up blargg's test roms
+// - [ ] Implement loadRom function
+// - [ ] boot up one of blargg's test rom
 //
-//
+class Cart
+{
+private:
 // cartridge headers (check out pan docs for full info)
 // header located at address range $0100 - $014F
 struct RomHeader
@@ -26,6 +29,8 @@ struct RomHeader
     u8 globalChecksum; // $014E-014F
 };
 
-bool loadCart(char* cart);
+public:
+void loadRom(const std::string& filepath);
+
 
 #endif
