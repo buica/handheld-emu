@@ -8,8 +8,7 @@
 // - [ ] Implement loadRom function
 // - [ ] boot up one of blargg's test rom
 //
-class Cart
-{
+class Cart {
 private:
     // cartridge headers (check out pan docs for full info)
     // header located at address range $0100 - $014F

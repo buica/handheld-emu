@@ -8,6 +8,7 @@ Memory::Memory() {
 
 }
 
+// WIP
 // Read byte from memory at given address
 // Use pan docs memory map for behavior
 u8 Memory::readByte(u16 address) {
@@ -58,8 +59,8 @@ u8 Memory::readByte(u16 address) {
         return dmgMemory[address];
     }
     else {
-        std::cerr << "Invalid memory address: " << std::hex << address << std::endl;
-        return 1;
+        std::cerr << "Invalid memory address: 0x" << std::hex << std::uppercase << address << std::endl;
+        return 0xFF; // unmapped memory
     }
 }
 
@@ -121,14 +122,4 @@ void Memory::writeByte(u16 address, u8 value) {
     else {
         std::cerr << "Invalid memory address: " << std::hex << address << std::endl;
     }
-}
-
-
-void Memory::loadRom(const std::string& filepath) {
-    // Load ROM from file into memory
-    std::ifstream file(filepath, std::ios::binary); // open in binary mode without os translation
-    if (!file.is_open()) {
-        std::cerr << "Failed to open ROM file: " << filepath << std::endl;
-    }
-
 }
