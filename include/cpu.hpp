@@ -14,7 +14,7 @@
 class CPU {
 private:
 // CPU Registers
-// We need to be able to access same registers as 16bit regsters and 2 separate 8bit registers
+// We need to be able to access same registers as 16bit regsters and as 2 separate 8bit registers
 // Using unions along with grouping the 8bit regs in structs will allow this behavior
 
 // Unions allocate space for largest member and all members share memory

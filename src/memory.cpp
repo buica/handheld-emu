@@ -1,6 +1,5 @@
 #include "../include/memory.hpp"
 #include <iostream>
-#include <fstream>
 
 
 Memory::Memory() {
@@ -8,7 +7,9 @@ Memory::Memory() {
 
 }
 
-// WIP
+// TODO
+// - [] finish correct behavior for each address range
+//
 // Read byte from memory at given address
 // Use pan docs memory map for behavior
 u8 Memory::readByte(u16 address) {
@@ -120,6 +121,6 @@ void Memory::writeByte(u16 address, u8 value) {
         dmgMemory[address] = value;
     }
     else {
-        std::cerr << "Invalid memory address: " << std::hex << address << std::endl;
+        std::cerr << "Invalid memory address: 0x" << std::hex << std::uppercase << address << std::endl;
     }
 }
