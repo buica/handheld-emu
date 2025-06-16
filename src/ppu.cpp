@@ -1,6 +1,6 @@
-#include <ppu.hpp>
+#include "../include/ppu.hpp"
 
-// Pixel Processig Unit To-Do
+// Pixel Processing Unit To-Do
 // define ppu constants and structures
 // figure out how ppu interacts with cpu and memory
 // then implement ppu logic

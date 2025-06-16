@@ -3,6 +3,7 @@
 
 #include "common.hpp"
 #include <string>
+#include <vector>
 
 // To-Do
 // - [ ] Implement loadRom function
@@ -30,7 +31,7 @@ private:
     };
 
 public:
-    void loadRom(const std::string& filepath);
+    std::vector<u8> loadRom(const std::string& filepath);
 };
 
 #endif
