@@ -14,6 +14,11 @@ CPU::CPU() {
 }
 
 // quick reference access for early debugging
+/*
+ * @brief
+ * @param
+ * @return
+ */
 u8& CPU::getA() {
     return regAF.A;
 }
@@ -24,6 +29,11 @@ u16& CPU::getAF() {
     return regAF.AF;
 }
 
+/*
+ * @brief
+ * @param
+ * @return
+ */
 void CPU::printCPU() {
     std::clog << "CPU State:" << std::endl;
     std::clog << "AF: " << std::hex << getAF() << std::endl;
@@ -34,12 +44,22 @@ void CPU::printCPU() {
     std::clog << "PC: " << std::hex << PC << std::endl;
 }
 
+/*
+ * @brief
+ * @param
+ * @return
+ */
 u8 CPU::fetchInstruction(Memory& memory) {
     // get the opcode and increment PC
     u8 opcode = memory.readByte(PC++);
     return opcode;
 }
 
+/*
+ * @brief
+ * @param
+ * @return
+ */
 void CPU::executeInstruction(Memory& memory) {
     // todo
     // std::cout << "executeInstruction needs to be implemented" << std::endl;

@@ -4,8 +4,13 @@
 #include <filesystem>
 
 
-//
-std::vector<u8> loadRom(const std::string& filepath) {
+/*
+ * @brief Loads a ROM file into memory.
+ *
+ * @param filepath The path to the ROM file.
+ * @return A vector containing the ROM data.
+ */
+std::vector<u8> load(const std::string& filepath) {
     // reports error if file doesnt exist so lets use this for error handling
     u64 size = 0;
     try {

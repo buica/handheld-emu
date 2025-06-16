@@ -8,10 +8,17 @@ Memory::Memory() {
 }
 
 // TODO
+// - [] implement serial data transfer ports
 // - [] finish correct behavior for each address range
 //
 // Read byte from memory at given address
 // Use pan docs memory map for behavior
+
+ /*
+  * @brief Reads a byte from memory at the given address.
+  * @param address The address to read from.
+  * @return The byte read from memory.
+  */
 u8 Memory::readByte(u16 address) {
     if (address >= 0x0000 && address <= 0x3FFF) {
         // 16 KiB ROM bank 00
@@ -65,14 +72,22 @@ u8 Memory::readByte(u16 address) {
     }
 }
 
-// Return 16bit value from memory at given address where
+/*
+ * @brief Reads a 16-bit value from memory at the given address.
+ * @param address The address to read from.
+ * @return The 16-bit value read from memory.
+ */
 u16 Memory::readWord(u16 address) {
     u8 low = readByte(address);
     u8 high = readByte(address + 1); // Little Endian
     return (high << 8) | low;
 }
 
-// Write byte to memory at given address
+/*
+ * @brief Writes a byte to memory at the given address.
+ * @param address The address to write to.
+ * @return void
+ */
 void Memory::writeByte(u16 address, u8 value) {
     if (address >= 0x0000 && address <= 0x3FFF) {
         // 16 KiB ROM bank 00

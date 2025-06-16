@@ -6,7 +6,7 @@
 #include <vector>
 
 // To-Do
-// - [ ] Implement loadRom function
+// - [x] Implement loadRom function
 // - [ ] boot up one of blargg's test rom
 //
 class Cart {
@@ -31,7 +31,8 @@ private:
     };
 
 public:
-    std::vector<u8> loadRom(const std::string& filepath);
+    Cart();
+    std::vector<u8> load(const std::string& filepath);
 };
 
 #endif
