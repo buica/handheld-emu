@@ -11,6 +11,7 @@
 //
 class Cart {
 private:
+    std::vector<u8> romData;
     // cartridge headers (check out pan docs for full info)
     // header located at address range $0100 - $014F
     struct RomHeader
@@ -32,7 +33,8 @@ private:
 
 public:
     Cart();
-    std::vector<u8> load(const std::string& filepath);
+    bool load(const std::string& filepath);
+    std::vector<u8> getRomData();
 };
 
 #endif
