@@ -23,7 +23,7 @@ private:
     //u8 dmgMemory[DMG_ADDRESS_SPACE_SIZE];
     std::array<u8, DMG_ADDRESS_SPACE_SIZE> dmgMemory; // will hold all our gameboy's addressable memory space
 public:
-    Memory();
+    Memory() = default;
     u8 readByte(u16 address);
     u16 readWord(u16 address);
     void writeByte(u16 address, u8 value);

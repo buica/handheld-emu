@@ -32,7 +32,7 @@ private:
     };
 
 public:
-    Cart();
+    Cart() = default;
     bool load(const std::string& filepath);
     std::vector<u8> getRomData();
 };
