@@ -3,7 +3,7 @@
 
 
 Memory::Memory() {
-    // Initialize memory here
+    // Initialize memory here? keep empty for now
 
 }
 
@@ -22,6 +22,7 @@ Memory::Memory() {
 u8 Memory::readByte(u16 address) {
     if (address >= 0x0000 && address <= 0x3FFF) {
         // 16 KiB ROM bank 00
+
         return dmgMemory[address]; // from cart, usually fixed bank
     }
     else if (address >= 0x4000 && address <= 0x7FFF) {
