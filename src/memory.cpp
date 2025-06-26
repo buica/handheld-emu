@@ -20,52 +20,38 @@ Memory::Memory() {
   * @return The byte read from memory.
   */
 u8 Memory::readByte(u16 address) {
-    if (address >= 0x0000 && address <= 0x3FFF) {
+    if (address >= ROM_BANK_00_START && address <= ROM_BANK_00_END) {
         // 16 KiB ROM bank 00
 
-        return dmgMemory[address]; // from cart, usually fixed bank
     }
-    else if (address >= 0x4000 && address <= 0x7FFF) {
-        // 16 KiB ROM bank 01-NN
-        return dmgMemory[address]; // from cart, switchable bank via mapper
+    else if (address >= ROM_BANK_01_START && address <= ROM_BANK_01_END) {
+
     }
-    else if (address >= 0x8000 && address <= 0x9FFF) {
+    else if (address >= VRAM_START && address <= VRAM_END) {
         // 8 KiB Video RAM
-        return dmgMemory[address];
     }
-    else if (address >= 0xA000 && address <= 0xBFFF) {
+    else if (address >= EXT_RAM_START && address <= EXT_RAM_END) {
         // 8 KiB External RAM
-        return dmgMemory[address];
     }
-    else if (address >= 0xC000 && address <= 0xCFFF) {
+    else if (address >= WORK_RAM_START && address <= WORK_RAM_END) {
         // 8 KiB work RAM
-        return dmgMemory[address];
     }
-    else if (address >= 0xD000 && address <= 0xDFFF) {
-        // 8 KiB work RAM
-        return dmgMemory[address];
-    }
-    else if (address >= 0xE000 && address <= 0xFDFF) {
+    else if (address >= ECHO_RAM_START && address <= ECHO_RAM_END) {
         // 8 KiB echo RAM
-        return dmgMemory[address]; // to-do: mirror of WRAM
     }
-    else if (address >= 0xFE00 && address <= 0xFE9F) {
+    else if (address >= OAM_START && address <= OAM_END) {
         // Object attribute memory (OAM)
-        return dmgMemory[address];
     }
-    else if (address >= 0xFF00 && address <= 0xFF7F) {
+    else if (address >= IO_START && address <= IO_END) {
         // i/o registers
         // look at i/o ranges
         // to-do: use switch statements to handle corresponding regs
-        return dmgMemory[address];
     }
-    else if (address >= 0xFF80 && address <= 0xFFFE) {
+    else if (address >= HRAM_START && address <= HRAM_END) {
         // high RAM
-        return dmgMemory[address];
     }
-    else if (address >= 0xFFFF && address <= 0xFFFF) {
+    else if (address == INTERRUPT_ENABLE) {
         // interrupt enable register (IE)
-        return dmgMemory[address];
     }
     else {
         std::cerr << "Invalid memory address: 0x" << std::hex << std::uppercase << address << std::endl;
@@ -76,7 +62,7 @@ u8 Memory::readByte(u16 address) {
 /*
  * @brief Reads a 16-bit value from memory at the given address.
  * @param address The address to read from.
- * @return The 16-bit value read from memory.
+ * @return The 16-bit value read from memory in little endian format.
  */
 u16 Memory::readWord(u16 address) {
     u8 low = readByte(address);
@@ -90,53 +76,41 @@ u16 Memory::readWord(u16 address) {
  * @return void
  */
 void Memory::writeByte(u16 address, u8 value) {
-    if (address >= 0x0000 && address <= 0x3FFF) {
+    if (address >= ROM_BANK_00_START && address <= ROM_BANK_00_END) {
         // 16 KiB ROM bank 00
-        dmgMemory[address] = value; // from cart, usually fixed bank
+
     }
-    else if (address >= 0x4000 && address <= 0x7FFF) {
-        // 16 KiB ROM bank 01-NN
-        dmgMemory[address] = value;
+    else if (address >= ROM_BANK_01_START && address <= ROM_BANK_01_END) {
+
     }
-    else if (address >= 0x8000 && address <= 0x9FFF) {
+    else if (address >= VRAM_START && address <= VRAM_END) {
         // 8 KiB Video RAM
-        dmgMemory[address] = value;
     }
-    else if (address >= 0xA000 && address <= 0xBFFF) {
+    else if (address >= EXT_RAM_START && address <= EXT_RAM_END) {
         // 8 KiB External RAM
-        dmgMemory[address] = value;
     }
-    else if (address >= 0xC000 && address <= 0xCFFF) {
+    else if (address >= WORK_RAM_START && address <= WORK_RAM_END) {
         // 8 KiB work RAM
-        dmgMemory[address] = value;
     }
-    else if (address >= 0xD000 && address <= 0xDFFF) {
-        // 8 KiB work RAM
-        dmgMemory[address] = value;
-    }
-    else if (address >= 0xE000 && address <= 0xFDFF) {
+    else if (address >= ECHO_RAM_START && address <= ECHO_RAM_END) {
         // 8 KiB echo RAM
-        dmgMemory[address] = value; // to-do: mirror of WRAM
     }
-    else if (address >= 0xFE00 && address <= 0xFE9F) {
+    else if (address >= OAM_START && address <= OAM_END) {
         // Object attribute memory (OAM)
-        dmgMemory[address] = value;
     }
-    else if (address >= 0xFF00 && address <= 0xFF7F) {
+    else if (address >= IO_START && address <= IO_END) {
         // i/o registers
         // look at i/o ranges
         // to-do: use switch statements to handle corresponding regs
-        dmgMemory[address] = value;
     }
-    else if (address >= 0xFF80 && address <= 0xFFFE) {
+    else if (address >= HRAM_START && address <= HRAM_END) {
         // high RAM
-        dmgMemory[address] = value;
     }
-    else if (address >= 0xFFFF && address <= 0xFFFF) {
+    else if (address == INTERRUPT_ENABLE) {
         // interrupt enable register (IE)
-        dmgMemory[address] = value;
     }
     else {
         std::cerr << "Invalid memory address: 0x" << std::hex << std::uppercase << address << std::endl;
+        return 0xFF; // unmapped memory
     }
 }
