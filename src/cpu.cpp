@@ -28,6 +28,21 @@ u8& CPU::getF() {
 u16& CPU::getAF() {
     return regAF.AF;
 }
+u16& CPU::getBC() {
+    return regBC.BC;
+}
+u16& CPU::getDE() {
+    return regDE.DE;
+}
+u16& CPU::getHL() {
+    return regHL.HL;
+}
+u16& CPU::getSP() {
+    return SP;
+}
+u16& CPU::getPC() {
+    return PC;
+}
 
 /*
  * @brief

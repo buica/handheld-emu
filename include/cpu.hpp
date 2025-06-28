@@ -53,7 +53,7 @@ private:
 
     u16 SP; // stack pointer
     u16 PC; // program counter
-    u8 cycles;
+    //u8 cycles; // aiming for instruction accuracy, not cycle-accuracy so is this needed?
 
 public:
     CPU();
@@ -65,6 +65,10 @@ public:
     u8& getA();
     u8& getF();
     u16& getAF();
-
+    u16& getBC();
+    u16& getDE();
+    u16& getHL();
+    u16& getSP();
+    u16& getPC();
 };
 #endif
