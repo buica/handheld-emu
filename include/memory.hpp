@@ -48,8 +48,6 @@ constexpr u16 INTERRUPT_ENABLE = 0xFFFF;
 
 
 class Memory {
-private:
-
 public:
     Memory();
     u8 readByte(u16 address);

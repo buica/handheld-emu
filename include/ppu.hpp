@@ -7,10 +7,12 @@ constexpr int DMG_SCREEN_HEIGHT = 144;
 
 
 class PPU {
+public:
+
+
 private:
 
 
-public:
 
 };
 

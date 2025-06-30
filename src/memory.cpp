@@ -111,6 +111,5 @@ void Memory::writeByte(u16 address, u8 value) {
     }
     else {
         std::cerr << "Invalid memory address: 0x" << std::hex << std::uppercase << address << std::endl;
-        return 0xFF; // unmapped memory
     }
 }

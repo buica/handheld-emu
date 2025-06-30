@@ -10,6 +10,12 @@
 // - [ ] boot up one of blargg's test rom
 //
 class Cart {
+public:
+    Cart() = default;
+    bool load(const std::string& filepath);
+    std::vector<u8> getRomData();
+
+
 private:
     std::vector<u8> romData;
     // cartridge headers (check out pan docs for full info)
@@ -30,11 +36,6 @@ private:
         u8 checksum; // $014D
         u8 globalChecksum; // $014E-014F
     };
-
-public:
-    Cart() = default;
-    bool load(const std::string& filepath);
-    std::vector<u8> getRomData();
 };
 
 #endif

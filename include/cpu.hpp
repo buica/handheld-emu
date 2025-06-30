@@ -12,6 +12,22 @@
 
 
 class CPU {
+public:
+    CPU();
+    u8 fetchInstruction(Memory& memory);
+    void decodeInstruction();
+    void executeInstruction(Memory& memory);
+    void printCPU();
+    void reset();
+    u8& getA();
+    u8& getF();
+    u16& getAF();
+    u16& getBC();
+    u16& getDE();
+    u16& getHL();
+    u16& getSP();
+    u16& getPC();
+
 private:
 // CPU Registers
 // We need to be able to access same registers as 16bit regsters and as 2 separate 8bit registers
@@ -54,21 +70,6 @@ private:
     u16 SP; // stack pointer
     u16 PC; // program counter
     //u8 cycles; // aiming for instruction accuracy, not cycle-accuracy so is this needed?
-
-public:
-    CPU();
-    u8 fetchInstruction(Memory& memory);
-    void decodeInstruction();
-    void executeInstruction(Memory& memory);
-    void printCPU();
-    void reset();
-    u8& getA();
-    u8& getF();
-    u16& getAF();
-    u16& getBC();
-    u16& getDE();
-    u16& getHL();
-    u16& getSP();
-    u16& getPC();
 };
+
 #endif
