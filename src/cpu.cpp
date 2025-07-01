@@ -4,44 +4,7 @@
 
 
 CPU::CPU() {
-    // set to boot values
-    regAF.AF = 0x0000;
-    regBC.BC = 0x0000;
-    regDE.DE = 0x0000;
-    regHL.HL = 0x0000;
-    SP = 0x0000;
-    PC = 0x0000;
-}
-
-// quick reference access for early debugging
-/*
- * @brief
- * @param
- * @return
- */
-u8& CPU::getA() {
-    return regAF.A;
-}
-u8& CPU::getF() {
-    return regAF.F;
-}
-u16& CPU::getAF() {
-    return regAF.AF;
-}
-u16& CPU::getBC() {
-    return regBC.BC;
-}
-u16& CPU::getDE() {
-    return regDE.DE;
-}
-u16& CPU::getHL() {
-    return regHL.HL;
-}
-u16& CPU::getSP() {
-    return SP;
-}
-u16& CPU::getPC() {
-    return PC;
+    initRegisters();
 }
 
 /*
@@ -57,6 +20,83 @@ void CPU::printCPU() {
     std::clog << "HL: " << std::hex << regHL.HL << std::endl;
     std::clog << "SP: " << std::hex << SP << std::endl;
     std::clog << "PC: " << std::hex << PC << std::endl;
+}
+
+void CPU::reset() {
+    // set to boot values
+}
+
+/*
+ * @brief getters for the registers
+ *
+ * @return
+ */
+u8& CPU::getA() {
+    return regAF.A;
+}
+
+u8& CPU::getB() {
+    return regBC.B;
+}
+
+u8& CPU::getC() {
+    return regBC.C;
+}
+
+u8& CPU::getD() {
+    return regDE.D;
+}
+
+u8& CPU::getE() {
+    return regDE.E;
+}
+
+u8& CPU::getF() {
+    return regAF.F;
+}
+
+u8& CPU::getH() {
+    return regHL.H;
+}
+
+u8& CPU::getL() {
+    return regHL.L;
+}
+
+u16& CPU::getAF() {
+    return regAF.AF;
+}
+
+u16& CPU::getBC() {
+    return regBC.BC;
+}
+
+u16& CPU::getDE() {
+    return regDE.DE;
+}
+
+u16& CPU::getHL() {
+    return regHL.HL;
+}
+
+u16& CPU::getSP() {
+    return SP;
+}
+
+u16& CPU::getPC() {
+    return PC;
+}
+
+/*
+ * Initialize registers to boot values
+ */
+void CPU::initRegisters() {
+    regAF.AF = 0x0000;
+    regBC.BC = 0x0000;
+    regDE.DE = 0x0000;
+    regHL.HL = 0x0000;
+    SP = 0x0000;
+    PC = 0x0100; // our emu doesnt care about boot ROM sequence, start game ROM
 }
 
 /*
@@ -107,17 +147,3 @@ void CPU::executeInstruction(Memory& memory) {
     }
 
 }
-
-
-
-// void cpuInit()
-// {
-//     // todo
-//     std::cout << "cpuInit needs to be implemented" << std::endl;
-// }
-
-// bool cpuStep()
-// {
-//     std::cout << "cpuStep needs to be implemented" << std::endl;
-//     return false;
-// }
