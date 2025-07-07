@@ -88,7 +88,7 @@ u16& CPU::getPC() {
 }
 
 /*
- * Initialize registers to boot values
+ * Initialize registers to boot values WIP
  */
 void CPU::initRegisters() {
     regAF.AF = 0x0000;
@@ -120,6 +120,10 @@ void CPU::executeInstruction(Memory& memory) {
     // std::cout << "executeInstruction needs to be implemented" << std::endl;
     u8 opcode = fetchInstruction(memory);
 
+    /*
+     * Should we abstract the instruction decoding into its own method later?
+     * Theres way over 100 instructions
+     */
     // decode and execute
     // Build up most essential instructions first
     // use opcode tables
