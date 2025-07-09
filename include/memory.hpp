@@ -2,6 +2,7 @@
 #define MEMORY_HPP
 
 #include "common.hpp"
+#include "cart.hpp"
 #include <array>
 
 // Memory class will act as our emulator's memory bus and
@@ -45,6 +46,9 @@ constexpr u16 HRAM_START = 0xFF80;
 constexpr u16 HRAM_END = 0xFFFE;
 constexpr u16 INTERRUPT_ENABLE = 0xFFFF;
 
+constexpr u16 WORK_RAM_SIZE = WORK_RAM_END - WORK_RAM_START + 1; // 0x2000
+constexpr u16 ECHO_RAM_SIZE = ECHO_RAM_END - ECHO_RAM_START + 1; // 0x2000
+constexpr u8 HRAM_SIZE = HRAM_END - HRAM_START + 1; // 0x7F
 
 
 class Memory {
@@ -53,6 +57,16 @@ public:
     u8 readByte(u16 address);
     u16 readWord(u16 address);
     void writeByte(u16 address, u8 value);
+
+private:
+    std::array<u8, WORK_RAM_SIZE> m_work_ram;
+    std::array<u8, ECHO_RAM_SIZE> m_echo_ram;
+    std::array<u8, HRAM_SIZE> m_hram;
+    u8* m_interrupt_enable;
+
+    Cart& m_cart;
+
+    void initMemory();
 };
 
 #endif
