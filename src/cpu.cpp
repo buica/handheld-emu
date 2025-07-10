@@ -22,69 +22,69 @@ void CPU::printCPU() {
     std::clog << "PC: " << std::hex << PC << std::endl;
 }
 
-void CPU::reset() {
-    // set to boot values
-}
+// void CPU::reset() {
+//     // set to boot values
+// }
 
 /*
  * @brief getters for the registers
  *
  * @return
  */
-u8& CPU::getA() {
-    return regAF.A;
+u8 CPU::getA() {
+    return m_A;
 }
 
-u8& CPU::getB() {
-    return regBC.B;
+u8 CPU::getB() {
+    return m_B;
 }
 
-u8& CPU::getC() {
-    return regBC.C;
+u8 CPU::getC() {
+    return m_C;
 }
 
-u8& CPU::getD() {
-    return regDE.D;
+u8 CPU::getD() {
+    return m_D;
 }
 
-u8& CPU::getE() {
-    return regDE.E;
+u8 CPU::getE() {
+    return m_E;
 }
 
-u8& CPU::getF() {
-    return regAF.F;
+u8 CPU::getF() {
+    return m_F;
 }
 
-u8& CPU::getH() {
-    return regHL.H;
+u8 CPU::getH() {
+    return m_H;
 }
 
-u8& CPU::getL() {
-    return regHL.L;
+u8 CPU::getL() {
+    return m_L;
 }
 
-u16& CPU::getAF() {
-    return regAF.AF;
+u16 CPU::getAF() {
+    return (static_cast<u16>(m_A) << 8) | m_F;
 }
 
-u16& CPU::getBC() {
-    return regBC.BC;
+u16 CPU::getBC() {
+    return (static_cast<u16>(m_B) << 8) | m_C;
 }
 
-u16& CPU::getDE() {
-    return regDE.DE;
+u16 CPU::getDE() {
+    return (static_cast<u16>(m_D) << 8) | m_E;
 }
 
-u16& CPU::getHL() {
-    return regHL.HL;
+u16 CPU::getHL() {
+    return (static_cast<u16>(m_H) << 8) | m_L;
 }
 
-u16& CPU::getSP() {
-    return SP;
+u16 CPU::getSP() {
+    return m_SP;
 }
 
-u16& CPU::getPC() {
-    return PC;
+u16 CPU::getPC() {
+    return m_PC;
 }
 
 /*
@@ -95,8 +95,8 @@ void CPU::initRegisters() {
     regBC.BC = 0x0000;
     regDE.DE = 0x0000;
     regHL.HL = 0x0000;
-    SP = 0x0000;
-    PC = 0x0100; // our emu doesnt care about boot ROM sequence, start game ROM
+    m_SP = 0x0000;
+    m_PC = 0x0100; // our emu doesnt care about boot ROM sequence, start game ROM
 }
 
 /*
@@ -106,7 +106,7 @@ void CPU::initRegisters() {
  */
 u8 CPU::fetchInstruction(Memory& memory) {
     // get the opcode and increment PC
-    u8 opcode = memory.readByte(PC++);
+    u8 opcode = memory.readByte(m_PC++);
     return opcode;
 }
 
