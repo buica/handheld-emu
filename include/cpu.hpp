@@ -19,20 +19,20 @@ public:
     CPU();
     void printCPU();
     //void reset(); can't we just use initRegisters() in place of this?
-    u8 getA();
-    u8 getB();
-    u8 getC();
-    u8 getD();
-    u8 getE();
-    u8 getF();
-    u8 getH();
-    u8 getL();
-    u16 getAF();
-    u16 getBC();
-    u16 getDE();
-    u16 getHL();
-    u16 getSP();
-    u16 getPC();
+    u8 getA() const;
+    u8 getB() const;
+    u8 getC() const;
+    u8 getD() const;
+    u8 getE() const;
+    u8 getF() const;
+    u8 getH() const;
+    u8 getL() const;
+    u16 getAF() const;
+    u16 getBC() const;
+    u16 getDE() const;
+    u16 getHL() const;
+    u16 getSP() const;
+    u16 getPC() const;
 
 
 private:
