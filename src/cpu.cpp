@@ -15,11 +15,11 @@ CPU::CPU() {
 void CPU::printCPU() {
     std::clog << "CPU State:" << std::endl;
     std::clog << "AF: " << std::hex << getAF() << std::endl;
-    std::clog << "BC: " << std::hex << regBC.BC << std::endl;
-    std::clog << "DE: " << std::hex << regDE.DE << std::endl;
-    std::clog << "HL: " << std::hex << regHL.HL << std::endl;
-    std::clog << "SP: " << std::hex << SP << std::endl;
-    std::clog << "PC: " << std::hex << PC << std::endl;
+    std::clog << "BC: " << std::hex << getBC() << std::endl;
+    std::clog << "DE: " << std::hex << getDE() << std::endl;
+    std::clog << "HL: " << std::hex << getHL() << std::endl;
+    std::clog << "SP: " << std::hex << getSP() << std::endl;
+    std::clog << "PC: " << std::hex << getPC() << std::endl;
 }
 
 // void CPU::reset() {
