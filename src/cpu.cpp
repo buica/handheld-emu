@@ -129,25 +129,34 @@ void CPU::executeInstruction(Memory& memory) {
     // use opcode tables
     switch(opcode) {
         case 0x00: // NOP
+        {
             // 1 byte, 4 cycles
             break;
+        }
         case 0x01: // LD BC, n16
-            regBC.BC = memory.readWord(PC);
-            PC += 2;
+        {
+            u16 val = memory.readWord(m_PC);
+            m_B = val >> 8;
+            m_C = val & 0xFF;
+            m_PC += 2;
             break;
+        }
 
         //...
         case 0x10: // STOP n8
+        {
             // 2 bytes, 4 cycles
-            PC++;
+            m_PC++;
             break;
             // read more about STOP instruction:
             // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
-
+        }
 
         default:
+        {
             std::cerr << "Opcode Not Yet Implemented: 0x" << std::hex << (int)opcode << std::endl;
             break;
+        }
     }
 
 }
