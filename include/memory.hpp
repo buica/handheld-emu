@@ -53,7 +53,7 @@ constexpr u8 HRAM_SIZE = HRAM_END - HRAM_START + 1; // 0x7F
 
 class Memory {
 public:
-    Memory(Cart& cart);
+    Memory(Cart& cart); // TODO: addd ioRegister& to param & init rams in constructor
     u8 readByte(u16 address);
     u16 readWord(u16 address);
     void writeByte(u16 address, u8 value);

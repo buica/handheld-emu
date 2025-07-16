@@ -2,8 +2,9 @@
 #include <iostream>
 
 
-Memory::Memory() {
-    // Initialize memory here? keep empty for now
+
+Memory::Memory(Cart& cart) : m_cart(cart) {
+
 
 }
 

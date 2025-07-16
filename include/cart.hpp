@@ -7,17 +7,18 @@
 
 // To-Do
 // - [x] Implement loadRom function
+// - [ ] change romHeader naming to snake_case to be consistent
 // - [ ] boot up one of blargg's test rom
 //
 class Cart {
 public:
     Cart() = default;
     bool load(const std::string& filepath);
-    std::vector<u8> getRomData();
+    std::vector<u8>& getRomData();
 
 
 private:
-    std::vector<u8> romData;
+    std::vector<u8> m_rom_data;
     // cartridge headers (check out pan docs for full info)
     // header located at address range $0100 - $014F
     struct RomHeader
