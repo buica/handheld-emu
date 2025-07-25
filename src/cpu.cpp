@@ -91,10 +91,13 @@ u16 CPU::getPC() const {
  * Initialize registers to boot values WIP
  */
 void CPU::initRegisters() {
-    regAF.AF = 0x0000;
-    regBC.BC = 0x0000;
-    regDE.DE = 0x0000;
-    regHL.HL = 0x0000;
+    m_A = 0x0000;
+    m_B = 0x0000;
+    m_C = 0x0000;
+    m_D = 0x0000;
+    m_E = 0x0000;
+    m_H = 0x0000;
+    m_L = 0x0000;
     m_SP = 0x0000;
     m_PC = 0x0100; // our emu doesnt care about boot ROM sequence, start game ROM
 }

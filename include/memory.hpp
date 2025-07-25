@@ -32,8 +32,8 @@ constexpr u16 EXT_RAM_END = 0xBFFF;
 // Work ram divided into 2 regions as pan doc notes the following
 // for the D000-DFFF region: "in CGB mode, switchable bank 1-7".
 // we're sticking with 1 region for now.
-constexpr u16 WORK_RAM_START = 0xC000;
-constexpr u16 WORK_RAM_END = 0xDFFF;
+constexpr u16 WRAM_START = 0xC000;
+constexpr u16 WRAM_END = 0xDFFF;
 constexpr u16 ECHO_RAM_START = 0xE000;
 constexpr u16 ECHO_RAM_END = 0xFDFF;
 constexpr u16 OAM_START = 0xFE00;
@@ -46,7 +46,7 @@ constexpr u16 HRAM_START = 0xFF80;
 constexpr u16 HRAM_END = 0xFFFE;
 constexpr u16 INTERRUPT_ENABLE = 0xFFFF;
 
-constexpr u16 WORK_RAM_SIZE = WORK_RAM_END - WORK_RAM_START + 1; // 0x2000
+constexpr u16 WRAM_SIZE = WRAM_END - WRAM_START + 1; // 0x2000
 constexpr u16 ECHO_RAM_SIZE = ECHO_RAM_END - ECHO_RAM_START + 1; // 0x2000
 constexpr u8 HRAM_SIZE = HRAM_END - HRAM_START + 1; // 0x7F
 
@@ -59,7 +59,7 @@ public:
     void writeByte(u16 address, u8 value);
 
 private:
-    std::array<u8, WORK_RAM_SIZE> m_work_ram;
+    std::array<u8, WRAM_SIZE> m_work_ram;
     std::array<u8, ECHO_RAM_SIZE> m_echo_ram;
     std::array<u8, HRAM_SIZE> m_hram;
     u8* m_interrupt_enable;
