@@ -3,7 +3,7 @@
 
 
 
-Memory::Memory(Cart& cart) : m_cart(cart) {
+Memory::Memory(Cart& cart, IORegisters& ioRegister) : m_cart(cart), m_ioRegister(ioRegister) {
 
 }
 
@@ -23,7 +23,7 @@ u8 Memory::readByte(u16 address) {
     if (address >= ROM_BANK_00_START && address <= ROM_BANK_00_END) {
         // 16 KiB ROM bank 00
 
-    } else if (address >= ROM_BANK_01_START && address <= ROM_BANK_01_END) {
+    } else if (address >= ROM_BANK_NN_START && address <= ROM_BANK_NN_END) {
 
     } else if (address >= VRAM_START && address <= VRAM_END) {
         // 8 KiB Video RAM
@@ -72,7 +72,7 @@ void Memory::writeByte(u16 address, u8 value) {
     if (address >= ROM_BANK_00_START && address <= ROM_BANK_00_END) {
         // 16 KiB ROM bank 00
 
-    } else if (address >= ROM_BANK_01_START && address <= ROM_BANK_01_END) {
+    } else if (address >= ROM_BANK_NN_START && address <= ROM_BANK_NN_END) {
 
     } else if (address >= VRAM_START && address <= VRAM_END) {
         // 8 KiB Video RAM

@@ -3,6 +3,7 @@
 
 #include "common.hpp"
 #include "cart.hpp"
+#include "io_registers.hpp"
 #include <array>
 
 // Memory class will act as our emulator's memory bus and
@@ -23,8 +24,8 @@ constexpr u16 SERIAL_TRANSFER_CONTROL = 0xFF02;
 
 constexpr u16 ROM_BANK_00_START = 0x0000;
 constexpr u16 ROM_BANK_00_END = 0x3FFF;
-constexpr u16 ROM_BANK_01_START = 0x4000;
-constexpr u16 ROM_BANK_01_END = 0x7FFF;
+constexpr u16 ROM_BANK_NN_START = 0x4000;
+constexpr u16 ROM_BANK_NN_END = 0x7FFF;
 constexpr u16 VRAM_START = 0x8000;
 constexpr u16 VRAM_END = 0x9FFF;
 constexpr u16 EXT_RAM_START = 0xA000;
@@ -53,7 +54,7 @@ constexpr u8 HRAM_SIZE = HRAM_END - HRAM_START + 1; // 0x7F
 
 class Memory {
 public:
-    Memory(Cart& cart); // TODO: addd ioRegister& to param & init rams in constructor
+    Memory(Cart& cart, IORegisters& ioRegister);
     u8 readByte(u16 address);
     u16 readWord(u16 address);
     void writeByte(u16 address, u8 value);
@@ -65,6 +66,7 @@ private:
     u8* m_interrupt_enable;
 
     Cart& m_cart;
+    IORegisters& m_ioRegister;
 
     void initMemory();
 };
