@@ -1,5 +1,4 @@
-#ifndef CPU_HPP
-#define CPU_HPP
+#pragma once
 
 #include "common.hpp"
 #include "memory.hpp"
@@ -56,5 +55,3 @@ private:
     u16 m_PC;
     u8 m_cycles;
 };
-
-#endif

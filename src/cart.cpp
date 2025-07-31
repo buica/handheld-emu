@@ -26,9 +26,9 @@ bool Cart::load(const std::string& filepath) {
         return false;
     }
 
-    std::vector<u8> romData(size);
+    std::vector<u8> m_rom_data(size);
     // file.read expects char * so need to cast byte data in uint8_t* to char*
-    if (!file.read(reinterpret_cast<char*>(romData.data()), size)) {
+    if (!file.read(reinterpret_cast<char*>(m_rom_data.data()), size)) {
         std::cerr << "Failed to read ROM file: " << filepath << std::endl;
         return false;
     }

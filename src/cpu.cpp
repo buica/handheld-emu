@@ -26,11 +26,7 @@ void CPU::printCPU() {
 //     // set to boot values
 // }
 
-/*
- * @brief getters for the registers
- *
- * @return
- */
+
 u8 CPU::getA() const {
     return m_A;
 }
@@ -113,6 +109,7 @@ u8 CPU::fetchInstruction(Memory& memory) {
     return opcode;
 }
 
+// TODO: refactor once the switch cases start getting too long (maybe lookup table )
 /*
  * @brief
  * @param

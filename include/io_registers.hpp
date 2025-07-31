@@ -1,5 +1,4 @@
-#ifndef IO_REGISTERS_HPP
-#define IO_REGISTERS_HPP
+#pragma once
 
 #include "common.hpp"
 
@@ -27,5 +26,3 @@ public:
 private:
 
 };
-
-#endif

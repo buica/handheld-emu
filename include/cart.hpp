@@ -1,5 +1,5 @@
-#ifndef CART_HPP
-#define CART_HPP
+#pragma once
+
 
 #include "common.hpp"
 #include <string>
@@ -38,5 +38,3 @@ private:
         u8 globalChecksum; // $014E-014F
     };
 };
-
-#endif

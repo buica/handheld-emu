@@ -1,5 +1,4 @@
-#ifndef MEMORY_HPP
-#define MEMORY_HPP
+#pragma once
 
 #include "common.hpp"
 #include "cart.hpp"
@@ -70,5 +69,3 @@ private:
 
     void initMemory();
 };
-
-#endif

@@ -1,6 +1,4 @@
-#ifndef PPU_HPP
-#define PPU_HPP
-
+#pragma once
 
 constexpr int DMG_SCREEN_WIDTH = 160;
 constexpr int DMG_SCREEN_HEIGHT = 144;
@@ -15,5 +13,3 @@ private:
 
 
 };
-
-#endif

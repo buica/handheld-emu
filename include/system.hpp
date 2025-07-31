@@ -1,5 +1,11 @@
-#ifndef SYSTEM_HPP
-#define SYSTEM_HPP
+#pragma once
+
+#include "common.hpp"
+#include "cpu.hpp"
+#include "memory.hpp"
+#include "cart.hpp"
+#include "ppu.hpp"
+
 
 // switching from singleton, context-based architecture
 // to a more flexible constructor based architecture
@@ -10,6 +16,13 @@
 class System {
 public:
 
-};
+private:
+    System() = default;
+    Cart m_cart;
+    Memory m_memory;
+    CPU m_cpu;
+    PPU m_ppu;
 
-#endif
+
+
+};
