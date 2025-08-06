@@ -17,7 +17,7 @@ class System {
 public:
 
 private:
-    System() = default;
+    System();
     Cart m_cart;
     Memory m_memory;
     CPU m_cpu;
