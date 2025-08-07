@@ -4,6 +4,18 @@ project(handheld-emu LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include_directories(include)
+
+set(EMU_SOURCES
+    src/system.cpp
+    src/cpu.cpp
+    src/memory.cpp
+    src/cart.cpp
+    #src/ppu.cpp
+    #src/io_registers.cpp
+    #src/timer.cpp
+)
+
 enable_testing()
 
 add_executable(handheld-emu main.cpp)
