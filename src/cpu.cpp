@@ -14,6 +14,14 @@ CPU::CPU() {
  */
 void CPU::printCPU() {
     std::clog << "CPU State:" << std::endl;
+    std::clog << "A: " << std::hex << static_cast<int>(getA()) << std::endl;
+    std::clog << "B: " << std::hex << static_cast<int>(getB()) << std::endl;
+    std::clog << "C: " << std::hex << static_cast<int>(getC()) << std::endl;
+    std::clog << "D: " << std::hex << static_cast<int>(getD()) << std::endl;
+    std::clog << "E: " << std::hex << static_cast<int>(getE()) << std::endl;
+    std::clog << "F: " << std::hex << static_cast<int>(getF()) << std::endl;
+    std::clog << "H: " << std::hex << static_cast<int>(getH()) << std::endl;
+    std::clog << "L: " << std::hex << static_cast<int>(getL()) << std::endl;
     std::clog << "AF: " << std::hex << getAF() << std::endl;
     std::clog << "BC: " << std::hex << getBC() << std::endl;
     std::clog << "DE: " << std::hex << getDE() << std::endl;
@@ -87,13 +95,13 @@ u16 CPU::getPC() const {
  * Initialize registers to boot values WIP
  */
 void CPU::initRegisters() {
-    m_A = 0x0000;
-    m_B = 0x0000;
-    m_C = 0x0000;
-    m_D = 0x0000;
-    m_E = 0x0000;
-    m_H = 0x0000;
-    m_L = 0x0000;
+    m_A = 0x00;
+    m_B = 0x00;
+    m_C = 0x00;
+    m_D = 0x00;
+    m_E = 0x00;
+    m_H = 0x00;
+    m_L = 0x00;
     m_SP = 0x0000;
     m_PC = 0x0100; // our emu doesnt care about boot ROM sequence, start game ROM
 }
@@ -103,11 +111,11 @@ void CPU::initRegisters() {
  * @param
  * @return
  */
-u8 CPU::fetchInstruction(Memory& memory) {
-    // get the opcode and increment PC
-    u8 opcode = memory.readByte(m_PC++);
-    return opcode;
-}
+// u8 CPU::fetchInstruction(Memory& memory) {
+//     // get the opcode and increment PC
+//     u8 opcode = memory.readByte(m_PC++);
+//     return opcode;
+// }
 
 // TODO: refactor once the switch cases start getting too long (maybe lookup table )
 /*
@@ -115,48 +123,48 @@ u8 CPU::fetchInstruction(Memory& memory) {
  * @param
  * @return
  */
-void CPU::executeInstruction(Memory& memory) {
-    // todo
-    // std::cout << "executeInstruction needs to be implemented" << std::endl;
-    u8 opcode = fetchInstruction(memory);
+// void CPU::executeInstruction(Memory& memory) {
+//     // todo
+//     // std::cout << "executeInstruction needs to be implemented" << std::endl;
+//     u8 opcode = fetchInstruction(memory);
 
-    /*
-     * Should we abstract the instruction decoding into its own method later?
-     * Theres way over 100 instructions
-     */
-    // decode and execute
-    // Build up most essential instructions first
-    // use opcode tables
-    switch(opcode) {
-        case 0x00: // NOP
-        {
-            // 1 byte, 4 cycles
-            break;
-        }
-        case 0x01: // LD BC, n16
-        {
-            u16 val = memory.readWord(m_PC);
-            m_B = val >> 8;
-            m_C = val & 0xFF;
-            m_PC += 2;
-            break;
-        }
+//     /*
+//      * Should we abstract the instruction decoding into its own method later?
+//      * Theres way over 100 instructions
+//      */
+//     // decode and execute
+//     // Build up most essential instructions first
+//     // use opcode tables
+//     switch(opcode) {
+//         case 0x00: // NOP
+//         {
+//             // 1 byte, 4 cycles
+//             break;
+//         }
+//         case 0x01: // LD BC, n16
+//         {
+//             u16 val = memory.readWord(m_PC);
+//             m_B = val >> 8;
+//             m_C = val & 0xFF;
+//             m_PC += 2;
+//             break;
+//         }
 
-        //...
-        case 0x10: // STOP n8
-        {
-            // 2 bytes, 4 cycles
-            m_PC++;
-            break;
-            // read more about STOP instruction:
-            // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
-        }
+//         //...
+//         case 0x10: // STOP n8
+//         {
+//             // 2 bytes, 4 cycles
+//             m_PC++;
+//             break;
+//             // read more about STOP instruction:
+//             // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
+//         }
 
-        default:
-        {
-            std::cerr << "Opcode Not Yet Implemented: 0x" << std::hex << (int)opcode << std::endl;
-            break;
-        }
-    }
+//         default:
+//         {
+//             std::cerr << "Opcode Not Yet Implemented: 0x" << std::hex << (int)opcode << std::endl;
+//             break;
+//         }
+//     }
 
-}
+// }
