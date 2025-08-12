@@ -1,4 +1,5 @@
 #include "../include/memory.hpp"
+#include "../include/cart.hpp"
 #include <iostream>
 
 
@@ -22,6 +23,7 @@ Memory::Memory(Cart& cart, IORegisters& ioRegister) : m_cart(cart), m_ioRegister
 u8 Memory::readByte(u16 address) {
     if (address >= ROM_BANK_00_START && address <= ROM_BANK_00_END) {
         // 16 KiB ROM bank 00
+        return m_cart.readByte(address);
 
     } else if (address >= ROM_BANK_NN_START && address <= ROM_BANK_NN_END) {
 

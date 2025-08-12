@@ -2,3 +2,4 @@ roms/
 build/
 .DS_Store
 .zed/
+.vscode/
