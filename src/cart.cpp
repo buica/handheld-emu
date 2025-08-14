@@ -11,7 +11,7 @@
  * @return A vector containing the ROM data.
  */
 bool Cart::load(const std::string& filepath) {
-    // reports error if file doesnt exist so lets use this for error handling
+    Cart m_cart;
     u64 size = 0;
     try {
         size = std::filesystem::file_size(filepath);
@@ -26,7 +26,7 @@ bool Cart::load(const std::string& filepath) {
         return false;
     }
 
-    std::vector<u8> m_rom_data(size);
+    m_rom_data.resize(size);
     // file.read expects char * so need to cast byte data in uint8_t* to char*
     if (!file.read(reinterpret_cast<char*>(m_rom_data.data()), size)) {
         std::cerr << "Failed to read ROM file: " << filepath << std::endl;
@@ -36,11 +36,3 @@ bool Cart::load(const std::string& filepath) {
     return true;
 }
 
-/*
- * @brief Returns the ROM data.
- *
- * @return A vector containing the ROM data.
- */
-std::vector<u8>& Cart::getRomData() {
-    return m_rom_data;
-}
