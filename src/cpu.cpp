@@ -34,62 +34,48 @@ void CPU::printCPU() {
 //     // set to boot values
 // }
 
+// to-do: make getters all inline to save space
+u8 CPU::getA() const { return m_A; }
+u8 CPU::getB() const { return m_B; }
+u8 CPU::getC() const { return m_C; }
+u8 CPU::getD() const { return m_D; }
+u8 CPU::getE() const { return m_E; }
+u8 CPU::getF() const { return m_F; }
+u8 CPU::getH() const { return m_H; }
+u8 CPU::getL() const { return m_L; }
+u16 CPU::getAF() const { return (static_cast<u16>(m_A) << 8) | m_F; }
+u16 CPU::getBC() const { return (static_cast<u16>(m_B) << 8) | m_C; }
+u16 CPU::getDE() const { return (static_cast<u16>(m_D) << 8) | m_E; }
+u16 CPU::getHL() const { return (static_cast<u16>(m_H) << 8) | m_L; }
+u16 CPU::getSP() const { return m_SP; }
+u16 CPU::getPC() const { return m_PC; }
 
-u8 CPU::getA() const {
-    return m_A;
+// to-do: add setters for registers
+void CPU::setA(u8 value) {
+    m_A = value;
+}
+void CPU::setB(u8 value) {
+    m_B = value;
+}
+void CPU::setC(u8 value) {
+    m_C = value;
+}
+void CPU::setD(u8 value) {
+    m_D = value;
+}
+void CPU::setE(u8 value) {
+    m_E = value;
+}
+void CPU::setF(u8 value) {
+    m_F = value;
+}
+void CPU::setH(u8 value) {
+    m_H = value;
+}
+void CPU::setL(u8 value) {
+    m_L = value;
 }
 
-u8 CPU::getB() const {
-    return m_B;
-}
-
-u8 CPU::getC() const {
-    return m_C;
-}
-
-u8 CPU::getD() const {
-    return m_D;
-}
-
-u8 CPU::getE() const {
-    return m_E;
-}
-
-u8 CPU::getF() const {
-    return m_F;
-}
-
-u8 CPU::getH() const {
-    return m_H;
-}
-
-u8 CPU::getL() const {
-    return m_L;
-}
-
-u16 CPU::getAF() const {
-    return (static_cast<u16>(m_A) << 8) | m_F;
-}
-
-u16 CPU::getBC() const {
-    return (static_cast<u16>(m_B) << 8) | m_C;
-}
-
-u16 CPU::getDE() const {
-    return (static_cast<u16>(m_D) << 8) | m_E;
-}
-
-u16 CPU::getHL() const {
-    return (static_cast<u16>(m_H) << 8) | m_L;
-}
-
-u16 CPU::getSP() const {
-    return m_SP;
-}
-
-u16 CPU::getPC() const {
-    return m_PC;
-}
 
 /*
  * Initialize registers to boot values WIP

@@ -17,7 +17,7 @@ class CPU {
 public:
     CPU();
     void printCPU();
-    //void reset(); can't we just use initRegisters() in place of this?
+
     u8 getA() const;
     u8 getB() const;
     u8 getC() const;
@@ -33,6 +33,14 @@ public:
     u16 getSP() const;
     u16 getPC() const;
 
+    void setA(u8 value);
+    void setB(u8 value);
+    void setC(u8 value);
+    void setD(u8 value);
+    void setE(u8 value);
+    void setF(u8 value);
+    void setH(u8 value);
+    void setL(u8 value);
 
 private:
     void initRegisters();
