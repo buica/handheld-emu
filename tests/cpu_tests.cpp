@@ -2,16 +2,28 @@
 
 #include "../include/cpu.hpp"
 
-TEST_CASE("Test: 8-bit Register Getters") {
-    CPU cpu;
-    REQUIRE(cpu.getA() == 0x00);
-    REQUIRE(cpu.getB() == 0x00);
-    REQUIRE(cpu.getC() == 0x00);
-    REQUIRE(cpu.getD() == 0x00);
-    REQUIRE(cpu.getE() == 0x00);
-    REQUIRE(cpu.getF() == 0x00);
-    REQUIRE(cpu.getH() == 0x00);
-    REQUIRE(cpu.getL() == 0x00);
+TEST_CASE("Test: CPU Register Getters") {
+    SECTION("Test: 8-bit Register Getters") {
+        CPU cpu;
+        REQUIRE(cpu.getA() == 0x00);
+        REQUIRE(cpu.getB() == 0x00);
+        REQUIRE(cpu.getC() == 0x00);
+        REQUIRE(cpu.getD() == 0x00);
+        REQUIRE(cpu.getE() == 0x00);
+        REQUIRE(cpu.getF() == 0x00);
+        REQUIRE(cpu.getH() == 0x00);
+        REQUIRE(cpu.getL() == 0x00);
+    }
+
+    SECTION("Test: 16-bit Register Getters") {
+        CPU cpu;
+        REQUIRE(cpu.getAF() == 0x0000);
+        REQUIRE(cpu.getBC() == 0x0000);
+        REQUIRE(cpu.getDE() == 0x0000);
+        REQUIRE(cpu.getHL() == 0x0000);
+        REQUIRE(cpu.getSP() == 0x0000);
+        REQUIRE(cpu.getPC() == 0x0100);
+    }
 }
 
 // void CPU::initRegisters()

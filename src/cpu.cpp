@@ -109,48 +109,51 @@ void CPU::initRegisters() {
  * @param
  * @return
  */
-// void CPU::executeInstruction(Memory& memory) {
-//     // todo
-//     // std::cout << "executeInstruction needs to be implemented" << std::endl;
-//     u8 opcode = fetchInstruction(memory);
+void CPU::executeInstruction(Memory& memory) {
+    // todo
+    // std::cout << "executeInstruction needs to be implemented" << std::endl;
+    u8 opcode = fetchInstruction(memory);
 
-//     /*
-//      * Should we abstract the instruction decoding into its own method later?
-//      * Theres way over 100 instructions
-//      */
-//     // decode and execute
-//     // Build up most essential instructions first
-//     // use opcode tables
-//     switch(opcode) {
-//         case 0x00: // NOP
-//         {
-//             // 1 byte, 4 cycles
-//             break;
-//         }
-//         case 0x01: // LD BC, n16
-//         {
-//             u16 val = memory.readWord(m_PC);
-//             m_B = val >> 8;
-//             m_C = val & 0xFF;
-//             m_PC += 2;
-//             break;
-//         }
+    /*
+     * Should we abstract the instruction decoding into its own method later?
+     * Theres way over 100 instructions
+     */
+    // decode and execute
+    // Build up most essential instructions first
+    // use opcode tables
+    switch(opcode) {
+        case 0x00: // NOP
+        {
+            // 1 byte, 4 cycles
+            break;
+        }
+        // LD BC, n16: Load 16-bit immediate into BC
+        case 0x01:
+        {
+            u16 val = memory.readWord(m_PC);
+            m_B = val >> 8;
+            m_C = val & 0xFF;
+            m_PC += 2;
+            break;
+        }
+        // STOP n8
+        case 0x10:
+        {
+            // 2 bytes, 4 cycles
+            m_PC++;
+            break;
+            // read more about STOP instruction:
+            // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
+        }
 
-//         //...
-//         case 0x10: // STOP n8
-//         {
-//             // 2 bytes, 4 cycles
-//             m_PC++;
-//             break;
-//             // read more about STOP instruction:
-//             // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
-//         }
+        // LD r8,r8
 
-//         default:
-//         {
-//             std::cerr << "Opcode Not Yet Implemented: 0x" << std::hex << (int)opcode << std::endl;
-//             break;
-//         }
-//     }
 
-// }
+        default:
+        {
+            std::cerr << "Opcode Not Yet Implemented: 0x" << std::hex << (int)opcode << std::endl;
+            break;
+        }
+    }
+
+}
