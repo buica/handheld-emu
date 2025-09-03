@@ -7,11 +7,7 @@ CPU::CPU() {
     initRegisters();
 }
 
-/*
- * @brief
- * @param
- * @return
- */
+// For debugging: print out CPU state to log
 void CPU::printCPU() {
     std::clog << "CPU State:" << std::endl;
     std::clog << "A: " << std::hex << static_cast<int>(getA()) << std::endl;
@@ -30,11 +26,6 @@ void CPU::printCPU() {
     std::clog << "PC: " << std::hex << getPC() << std::endl;
 }
 
-// void CPU::reset() {
-//     // set to boot values
-// }
-
-// to-do: make getters all inline to save space
 u8 CPU::getA() const { return m_A; }
 u8 CPU::getB() const { return m_B; }
 u8 CPU::getC() const { return m_C; }
@@ -50,7 +41,6 @@ u16 CPU::getHL() const { return (static_cast<u16>(m_H) << 8) | m_L; }
 u16 CPU::getSP() const { return m_SP; }
 u16 CPU::getPC() const { return m_PC; }
 
-// to-do: add setters for registers
 void CPU::setA(u8 value) {
     m_A = value;
 }
@@ -92,32 +82,19 @@ void CPU::initRegisters() {
     m_PC = 0x0100; // our emu doesnt care about boot ROM sequence, start game ROM
 }
 
-/*
- * @brief
- * @param
- * @return
- */
-// u8 CPU::fetchInstruction(Memory& memory) {
-//     // get the opcode and increment PC
-//     u8 opcode = memory.readByte(m_PC++);
-//     return opcode;
-// }
 
-// TODO: refactor once the switch cases start getting too long (maybe lookup table )
-/*
- * @brief
- * @param
- * @return
- */
+u8 CPU::fetchInstruction(Memory& memory) {
+    // get the opcode and increment PC
+    u8 opcode = memory.readByte(m_PC++);
+    return opcode;
+}
+
+// TODO: refactor once the switch cases start getting too long (maybe lookup table)
 void CPU::executeInstruction(Memory& memory) {
     // todo
     // std::cout << "executeInstruction needs to be implemented" << std::endl;
     u8 opcode = fetchInstruction(memory);
 
-    /*
-     * Should we abstract the instruction decoding into its own method later?
-     * Theres way over 100 instructions
-     */
     // decode and execute
     // Build up most essential instructions first
     // use opcode tables
@@ -145,8 +122,8 @@ void CPU::executeInstruction(Memory& memory) {
             // read more about STOP instruction:
             // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
         }
-
         // LD r8,r8
+
 
 
         default:

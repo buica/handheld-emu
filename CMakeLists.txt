@@ -18,6 +18,9 @@ set(EMU_SOURCES
 add_library(handheld-core STATIC ${EMU_SOURCES})
 target_include_directories(handheld-core PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
+add_library(handheld-renderer STATIC src/sdl_renderer.cpp)
+target_include_directories(handheld-renderer PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
 add_executable(handheld-emu src/main.cpp)
 target_link_libraries(handheld-emu PRIVATE handheld-core)
 
