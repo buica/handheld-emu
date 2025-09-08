@@ -82,7 +82,9 @@ void CPU::initRegisters() {
     m_PC = 0x0100; // our emu doesnt care about boot ROM sequence, start game ROM
 }
 
-
+/*
+*
+*/
 u8 CPU::fetchInstruction(Memory& memory) {
     // get the opcode and increment PC
     u8 opcode = memory.readByte(m_PC++);
@@ -99,14 +101,13 @@ void CPU::executeInstruction(Memory& memory) {
     // Build up most essential instructions first
     // use opcode tables
     switch(opcode) {
-        case 0x00: // NOP
-        {
+        // NOP
+        case 0x00: {
             // 1 byte, 4 cycles
             break;
         }
         // LD BC, n16: Load 16-bit immediate into BC
-        case 0x01:
-        {
+        case 0x01: {
             u16 val = memory.readWord(m_PC);
             m_B = val >> 8;
             m_C = val & 0xFF;
@@ -114,15 +115,15 @@ void CPU::executeInstruction(Memory& memory) {
             break;
         }
         // STOP n8
-        case 0x10:
-        {
+        case 0x10: {
             // 2 bytes, 4 cycles
             m_PC++;
             break;
             // read more about STOP instruction:
             // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
         }
-        // LD r8,r8
+        // HALT
+        case 0x76:
 
 
 

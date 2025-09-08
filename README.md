@@ -4,8 +4,8 @@ handheld-emu is a work-in-progress, lightweight GameBoy emulator written in C++ 
 
 ## Features
 
-- Catch2 Unit testing with CTest
 - CMake-based cross-platform build
+- Catch2 Unit testing with CTest (automatically fetched by CMake)
 - 🚧 Full instruction accuracy in progress
 - 🏗️ Modular to allow future GBColor exntensibility.
 
@@ -20,7 +20,7 @@ handheld-emu is a work-in-progress, lightweight GameBoy emulator written in C++ 
 - Clone repo and install dependencies
 
 ```bash
-brew install make sdl2
+brew install cmake sdl2
 git clone https://github.com/buica/handheld-emu.git
 cd handheld-emu
 ```
