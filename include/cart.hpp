@@ -15,14 +15,14 @@ public:
     Cart() = default;
     bool load(const std::string& filepath);
     std::vector<u8>& getRomData();
+    u8 readByte(u16 address);
 
 
 private:
     std::vector<u8> m_rom_data;
     // cartridge headers (check out pan docs for full info)
     // header located at address range $0100 - $014F
-    struct RomHeader
-    {
+    struct RomHeader {
         u8 entry[4]; // $0100-$0103
         u8 logo[0x30]; // $0104-$0133
         char title[16]; // $0134-$0143
