@@ -51,13 +51,9 @@ TEST_CASE("Test: CPU Register Initialization") {
     }
 }
 
-// void CPU::printCPU()
-// TEST_CASE("Test: Printing CPU Register Values for Logging") {
+
+// u8 CPU::fetchInstruction(Memory& memory)
+// TEST_CASE("Test: CPU Fetch Instruction") {
 //     CPU cpu;
-//     cpu.printCPU();
 
-//     // test formatting of our log outputs here
 // }
-
-
-//

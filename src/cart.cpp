@@ -4,14 +4,13 @@
 #include <filesystem>
 
 
-/*
+/**
  * @brief Loads a ROM file into memory.
  *
  * @param filepath The path to the ROM file.
- * @return A vector containing the ROM data.
+ * @return True if load succeeds.
  */
 bool Cart::load(const std::string& filepath) {
-    Cart m_cart;
     u64 size = 0;
     try {
         size = std::filesystem::file_size(filepath);

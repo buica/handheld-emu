@@ -114,7 +114,7 @@ void CPU::executeInstruction(Memory& memory) {
             m_PC += 2;
             break;
         }
-        // STOP n8
+        // STOP
         case 0x10: {
             // 2 bytes, 4 cycles
             m_PC++;
