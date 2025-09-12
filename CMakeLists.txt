@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(EMU_SOURCES
     # src/system.cpp
     src/cpu.cpp
-    # src/memory.cpp
-    # src/cart.cpp
+    src/memory.cpp
+    src/cart.cpp
     #src/ppu.cpp
     # src/io_registers.cpp
     #src/timer.cpp
@@ -38,6 +38,8 @@ FetchContent_MakeAvailable(Catch2)
 add_executable(
     tests
     tests/cpu_tests.cpp
+    tests/cart_tests.cpp
+    # tests/memory_tests.cpp
 )
 target_link_libraries(tests PRIVATE handheld-core Catch2::Catch2WithMain)
 
