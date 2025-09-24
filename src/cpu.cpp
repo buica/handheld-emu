@@ -103,7 +103,7 @@ void CPU::executeInstruction(Memory& memory) {
     switch(opcode) {
         // NOP
         case 0x00: {
-            // 1 byte, 4 cycles
+            // 1 byte (PC+1), 4 cycles
             break;
         }
         // LD BC, n16: Load 16-bit immediate into BC
@@ -127,8 +127,7 @@ void CPU::executeInstruction(Memory& memory) {
 
 
 
-        default:
-        {
+        default: {
             std::cerr << "Opcode Not Yet Implemented: 0x" << std::hex << (int)opcode << std::endl;
             break;
         }
