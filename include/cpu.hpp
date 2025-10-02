@@ -42,14 +42,14 @@ public:
     void setH(u8 value);
     void setL(u8 value);
 
+    void setZeroFlag(bool set);
+
 private:
     void initRegisters();
     u8 fetchInstruction(Memory& memory);
     // void decodeInstruction();
     void executeInstruction(Memory& memory);
 
-    // We need to be able to access same registers as 16bit regsters and as 2 separate 8bit registers.
-    // We'll use unions along with grouping the 8bit regs within structs to implement this.
     u8 m_A;
     u8 m_B;
     u8 m_C;

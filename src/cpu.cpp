@@ -34,10 +34,13 @@ u8 CPU::getE() const { return m_E; }
 u8 CPU::getF() const { return m_F; }
 u8 CPU::getH() const { return m_H; }
 u8 CPU::getL() const { return m_L; }
-u16 CPU::getAF() const { return (static_cast<u16>(m_A) << 8) | m_F; }
+
+// these 16-bit registers form from combining pairs of 8-bit registers
+u16 CPU::getAF() const { return (static_cast<u16>(m_A) << 8) | m_F; } //lower 8 bits are flags
 u16 CPU::getBC() const { return (static_cast<u16>(m_B) << 8) | m_C; }
 u16 CPU::getDE() const { return (static_cast<u16>(m_D) << 8) | m_E; }
 u16 CPU::getHL() const { return (static_cast<u16>(m_H) << 8) | m_L; }
+
 u16 CPU::getSP() const { return m_SP; }
 u16 CPU::getPC() const { return m_PC; }
 
@@ -56,6 +59,7 @@ void CPU::setD(u8 value) {
 void CPU::setE(u8 value) {
     m_E = value;
 }
+
 void CPU::setF(u8 value) {
     m_F = value;
 }
@@ -66,6 +70,14 @@ void CPU::setL(u8 value) {
     m_L = value;
 }
 
+// TODO: implement the other flag bits setters
+void CPU::setZeroFlag(bool set) {
+    if (set) {
+        m_F |= 0x80; // set bit 7
+    } else {
+        m_F &= ~0x80; // clear bit 7 and leave all others untouched
+    }
+}
 
 /*
  * Initialize registers to boot values WIP
@@ -114,6 +126,16 @@ void CPU::executeInstruction(Memory& memory) {
             m_PC += 2;
             break;
         }
+        // LD (BC), A: Store A into address pointed by BC
+        case 0x02: {
+            u16 address = getBC();
+            memory.writeByte(address, m_A);
+            break;
+        }
+        // INC BC: Increment BC
+        case 0x03: {
+
+        }
         // STOP
         case 0x10: {
             // 2 bytes, 4 cycles
@@ -123,9 +145,14 @@ void CPU::executeInstruction(Memory& memory) {
             // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
         }
         // HALT
-        case 0x76:
-
-
+        case 0x76: {
+            // 1 byte, 4 cycles
+            // enter low power mode until an interrupt occurs
+            // for now, just print and exit
+            std::cout << "HALT encountered. Exiting." << std::endl;
+            exit(0);
+            break;
+        }
 
         default: {
             std::cerr << "Opcode Not Yet Implemented: 0x" << std::hex << (int)opcode << std::endl;
