@@ -105,20 +105,23 @@ u8 CPU::fetchInstruction(Memory& memory) {
 
 // TODO: refactor once the switch cases start getting too long (maybe lookup table)
 void CPU::executeInstruction(Memory& memory) {
-    // todo
-    // std::cout << "executeInstruction needs to be implemented" << std::endl;
     u8 opcode = fetchInstruction(memory);
 
     // decode and execute
     // Build up most essential instructions first
-    // use opcode tables
+    // Flags: Z (zero), N (negative:add/sub), H (half carry), C (carry)
+
+    // For full instruction info incl. flag behavior,
+    // use: https://rgbds.gbdev.io/docs/v0.9.4/gbz80.7
     switch(opcode) {
         // NOP
+        // 1 byte (taken care of by PC++), 4t (machine) cycles
         case 0x00: {
-            // 1 byte (PC+1), 4 cycles
+
             break;
         }
         // LD BC, n16: Load 16-bit immediate into BC
+        // 3 bytes (PC++ then +2), 12t cycles
         case 0x01: {
             u16 val = memory.readWord(m_PC);
             m_B = val >> 8;
@@ -127,26 +130,55 @@ void CPU::executeInstruction(Memory& memory) {
             break;
         }
         // LD (BC), A: Store A into address pointed by BC
+        // 1 byte, 8t cycles
         case 0x02: {
             u16 address = getBC();
             memory.writeByte(address, m_A);
             break;
         }
         // INC BC: Increment BC
+        // 1 byte, 8t cycles
         case 0x03: {
-
+            u16 bc = getBC();
+            bc++;
+            // assign relevant bytes back to B and C
+            m_B = bc >> 8; // keep upper 8 bits
+            m_C = bc & 0xFF; // mask upper 8 bits to keep lower 8 bits
+            break;
         }
+        // INC B
+        // 1 byte , 4t cycles
+        // Z, 0, H, -
+        case 0x04: {
+            u8 b = getB() + 1;
+            setB(b);
+            // set flags
+            setZeroFlag(b == 0);
+            // to-do: other 3 flags
+            break;
+        }
+        // DEC B
+        // 1 byte, 4t cycles
+        // Z, 1, H, -
+        case 0x05: {
+            u8 b = getB() - 1;
+            setB(b);
+            setZeroFlag(b == 0);
+
+            break;
+        }
+
         // STOP
+        // 2 bytes, 4t cycles
         case 0x10: {
-            // 2 bytes, 4 cycles
             m_PC++;
             break;
             // read more about STOP instruction:
             // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
         }
         // HALT
+        // 1 byte, 4 cycles
         case 0x76: {
-            // 1 byte, 4 cycles
             // enter low power mode until an interrupt occurs
             // for now, just print and exit
             std::cout << "HALT encountered. Exiting." << std::endl;
