@@ -60,8 +60,8 @@ u8 Memory::readByte(u16 address) {
  * @return The 16-bit value read from memory in little endian format.
  */
 u16 Memory::readWord(u16 address) {
-    u8 low = readByte(address);
-    u8 high = readByte(address + 1); // Little Endian
+    u8 low = readByte(address); // Little-Endian
+    u8 high = readByte(address + 1);
     return (high << 8) | low;
 }
 

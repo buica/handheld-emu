@@ -115,7 +115,7 @@ void CPU::executeInstruction(Memory& memory) {
     // use: https://rgbds.gbdev.io/docs/v0.9.4/gbz80.7
     switch(opcode) {
         // NOP
-        // 1 byte (taken care of by PC++), 4t (machine) cycles
+        // 1 byte (taken care of by PC++), 4t cycles (4 t-cycles = 1 machine cycle)
         case 0x00: {
 
             break;
@@ -164,10 +164,38 @@ void CPU::executeInstruction(Memory& memory) {
             u8 b = getB() - 1;
             setB(b);
             setZeroFlag(b == 0);
-
+            // to-do: other 3 flags
             break;
         }
-
+        // LD B, n8: Load 8-bit immediate into B
+        // 2 bytes, 8t cycles
+        case 0x06: {
+            u8 val = memory.readByte(m_PC);
+            setB(val);
+            m_PC++;
+            break;
+        }
+        // RLCA: Rotate reg A('s bits) left by 1.
+        // bit 7 moves to bit 0 and Carry flag.
+        // 1 byte, 4t cycles
+        // 0, 0, 0, C
+        case 0x07: {
+            u8 a = getA();
+            u8 bit7 = (a & 0x80) >> 7;
+            u8 rotatedA = (a << 1) | bit7; // shift bits & put bit7 into bit0
+            setA(rotatedA);
+            // setCarryFlag()
+        }
+        // LD (n16), SP: store stack ptr into memory addr given by 16-bit immediate value.
+        // 3 bytes, 20t cycles (w/o branch)
+        case 0x08: {
+            u16 sp = getSP();
+            u16 immediate = memory.readWord(m_PC);
+            memory.writeByte(immediate, sp & 0xFF);     // Little endian: low byte first
+            memory.writeByte(immediate + 1, sp >> 8);
+            m_PC += 2;
+            break;
+        }
         // STOP
         // 2 bytes, 4t cycles
         case 0x10: {
@@ -177,7 +205,7 @@ void CPU::executeInstruction(Memory& memory) {
             // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
         }
         // HALT
-        // 1 byte, 4 cycles
+        // 1 byte, 4t cycles
         case 0x76: {
             // enter low power mode until an interrupt occurs
             // for now, just print and exit

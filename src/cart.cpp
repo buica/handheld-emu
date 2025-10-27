@@ -19,7 +19,7 @@ bool Cart::load(const std::string& filepath) {
         return false;
     }
 
-    std::ifstream file(filepath, std::ios::binary); //open in binary mode to get raw bytes
+    std::ifstream file(filepath, std::ios::binary); // open in binary mode to get raw bytes
     if (!file.is_open()) {
         std::cerr << "Failed to open ROM file: " << filepath << std::endl;
         return false;
