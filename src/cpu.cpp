@@ -196,6 +196,13 @@ void CPU::executeInstruction(Memory& memory) {
             m_PC += 2;
             break;
         }
+        // ADD HL, BC
+        // 1 byte, 8t cycles
+        case 0x09: {
+            // must add low bytes L + C then use carry/half carry
+            // for high byte add H + B
+
+        }
         // STOP
         // 2 bytes, 4t cycles
         case 0x10: {
