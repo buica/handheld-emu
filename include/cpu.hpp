@@ -43,6 +43,9 @@ public:
     void setL(u8 value);
 
     void setZeroFlag(bool set);
+    void setSubtractionFlag(bool set);
+    void setHalfCarryFlag(bool set);
+    void setCarryFlag(bool set);
 
 private:
     void initRegisters();

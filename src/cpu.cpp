@@ -71,6 +71,13 @@ void CPU::setL(u8 value) {
 }
 
 // TODO: implement the other flag bits setters
+
+/**
+ * @brief Sets or clears the Zero Flag (Z) in the F register.
+ * @param set true sets bit 7 of the F register; false clears it.
+ * @details Set if and only if result of an operation is zero.
+ * Used after arithmetic/logic operations, and conditional jumps.
+ */
 void CPU::setZeroFlag(bool set) {
     if (set) {
         m_F |= 0x80; // set bit 7
@@ -78,6 +85,50 @@ void CPU::setZeroFlag(bool set) {
         m_F &= ~0x80; // clear bit 7 and leave all others untouched
     }
 }
+
+/**
+* @brief Sets or clears the Subtraction Flag (N) in the F register.
+* @param set true sets bit 6 of the F register; false clears it.
+* @details Indicates whether previous instruction has been a subtraction
+*/
+void CPU::setSubtractionFlag(bool set) {
+    if (set) {
+        m_F |= 0x40; // set bit 6
+    } else {
+        m_F &= ~0x40; // clear bit 6 and leave all others untouched
+    }
+}
+
+/**
+* @brief Sets or clears the Half Carry Flag (H) in the F register.
+* @param set true sets bit 5 of the F register; false clears it.
+* @details */
+void CPU::setHalfCarryFlag(bool set) {
+    if (set) {
+        m_F |= 0x20; // set bit 5
+    } else {
+        m_F &= ~0x20; // clear bit 5 and leave all others untouched
+    }
+}
+
+/**
+* @brief Sets or clears the Carry Flag (C) in the F register.
+* @param set true sets bit 4 of the F register; false clears it.
+* @details Is set in these cases:
+            - when result of 8-bit addtion is higher than $FF
+            - when result of 16-bit addition is higher than $FFFF
+            - when result of subtraction or comparison is lower
+              than zero
+            - when a rotate/shift operation shifts out a 1 bit
+*/
+void CPU::setCarryFlag(bool set) {
+    if (set) {
+        m_F |= 0x10; // set bit 4
+    } else {
+        m_F &= ~0x10; // clear bit 4 and leave all others untouched
+    }
+}
+
 
 /*
  * Initialize registers to boot values WIP
