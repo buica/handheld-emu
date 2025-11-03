@@ -162,24 +162,20 @@ void CPU::executeInstruction(Memory& memory) {
     // Build up most essential instructions first
     // Flags: Z (zero), N (negative:add/sub), H (half carry), C (carry)
 
+
+
     // For full instruction info incl. flag behavior,
     // use: https://rgbds.gbdev.io/docs/v0.9.4/gbz80.7
     switch(opcode) {
         // NOP
         // 1 byte (taken care of by PC++), 4t cycles (4 t-cycles = 1 machine cycle)
-        case 0x00: {
+        case 0x00:
+            NOP();
+            break;
 
+        case 0x01:
+            LD_BC_n16(memory);
             break;
-        }
-        // LD BC, n16: Load 16-bit immediate into BC
-        // 3 bytes (PC++ then +2), 12t cycles
-        case 0x01: {
-            u16 val = memory.readWord(m_PC);
-            m_B = val >> 8;
-            m_C = val & 0xFF;
-            m_PC += 2;
-            break;
-        }
         // LD (BC), A: Store A into address pointed by BC
         // 1 byte, 8t cycles
         case 0x02: {
@@ -252,8 +248,28 @@ void CPU::executeInstruction(Memory& memory) {
         case 0x09: {
             // must add low bytes L + C then use carry/half carry
             // for high byte add H + B
+            u16 hl = getHL();
+            u16 bc = getBC();
+            u32 result = static_cast<u32>(hl) + static_cast<u32>(bc);
+
+            m_H = (result >> 8) & 0xFF;
+            m_L = result & 0xFF;
+
+            bool hasCarry = result > 0xFFFF;
+            bool hasHalfCarry = (hl & 0x0FFF) + (bc & 0x0FFF) > 0x0FFF;
+            // set flags
+            setZeroFlag(false);
+            setSubtractionFlag(false);
+            setCarryFlag(hasCarry);
+            setHalfCarryFlag(hasHalfCarry);
+            break;
 
         }
+        case 0x0A:
+            LD_A_mBC(m_PC);
+            break;
+
+
         // STOP
         // 2 bytes, 4t cycles
         case 0x10: {
@@ -262,6 +278,8 @@ void CPU::executeInstruction(Memory& memory) {
             // read more about STOP instruction:
             // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
         }
+
+
         // HALT
         // 1 byte, 4t cycles
         case 0x76: {

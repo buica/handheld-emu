@@ -52,6 +52,23 @@ private:
     u8 fetchInstruction(Memory& memory);
     // void decodeInstruction();
     void executeInstruction(Memory& memory);
+    void NOP();
+    void LD_BC_n16(Memory& memory);
+    void LD_mBC_A(Memory& memory);
+    void INC_BC();
+    void INC_B();
+    void DEC_B();
+    void LD_B_n8(Memory& memory);
+    void RLCA();
+    void LD_mn16_SP(Memory& memory);
+    void ADD_HL_BC();
+    void LD_A_mBC(Memory& memory);
+    void DEC_BC();
+    void INC_C();
+    void DEC_C();
+    void LD_C_n8(Memory& memory);
+    void RRCA();
+    void STOP();
 
     u8 m_A;
     u8 m_B;
