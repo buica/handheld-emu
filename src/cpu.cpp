@@ -1,5 +1,6 @@
 #include "../include/cpu.hpp"
 #include "../include/memory.hpp"
+#include "cpu_instructions.cpp"
 #include <iostream>
 
 
@@ -163,12 +164,9 @@ void CPU::executeInstruction(Memory& memory) {
     // Flags: Z (zero), N (negative:add/sub), H (half carry), C (carry)
 
 
-
     // For full instruction info incl. flag behavior,
     // use: https://rgbds.gbdev.io/docs/v0.9.4/gbz80.7
     switch(opcode) {
-        // NOP
-        // 1 byte (taken care of by PC++), 4t cycles (4 t-cycles = 1 machine cycle)
         case 0x00:
             NOP();
             break;
@@ -176,107 +174,71 @@ void CPU::executeInstruction(Memory& memory) {
         case 0x01:
             LD_BC_n16(memory);
             break;
-        // LD (BC), A: Store A into address pointed by BC
-        // 1 byte, 8t cycles
-        case 0x02: {
-            u16 address = getBC();
-            memory.writeByte(address, m_A);
+
+        case 0x02:
+            LD_mBC_A(memory);
             break;
-        }
-        // INC BC: Increment BC
-        // 1 byte, 8t cycles
-        case 0x03: {
-            u16 bc = getBC();
-            bc++;
-            // assign relevant bytes back to B and C
-            m_B = bc >> 8; // keep upper 8 bits
-            m_C = bc & 0xFF; // mask upper 8 bits to keep lower 8 bits
+
+        case 0x03:
+            INC_BC();
             break;
-        }
-        // INC B
-        // 1 byte , 4t cycles
-        // Z, 0, H, -
-        case 0x04: {
-            u8 b = getB() + 1;
-            setB(b);
-            // set flags
-            setZeroFlag(b == 0);
-            // to-do: other 3 flags
+
+        case 0x04:
+            INC_B();
             break;
-        }
-        // DEC B
-        // 1 byte, 4t cycles
-        // Z, 1, H, -
-        case 0x05: {
-            u8 b = getB() - 1;
-            setB(b);
-            setZeroFlag(b == 0);
-            // to-do: other 3 flags
+
+        case 0x05:
+            DEC_B();
             break;
-        }
-        // LD B, n8: Load 8-bit immediate into B
-        // 2 bytes, 8t cycles
+
         case 0x06: {
-            u8 val = memory.readByte(m_PC);
-            setB(val);
-            m_PC++;
+            LD_B_n8(memory);
             break;
         }
-        // RLCA: Rotate reg A('s bits) left by 1.
-        // bit 7 moves to bit 0 and Carry flag.
-        // 1 byte, 4t cycles
-        // 0, 0, 0, C
+
         case 0x07: {
-            u8 a = getA();
-            u8 bit7 = (a & 0x80) >> 7;
-            u8 rotatedA = (a << 1) | bit7; // shift bits & put bit7 into bit0
-            setA(rotatedA);
-            // setCarryFlag()
-        }
-        // LD (n16), SP: store stack ptr into memory addr given by 16-bit immediate value.
-        // 3 bytes, 20t cycles (w/o branch)
-        case 0x08: {
-            u16 sp = getSP();
-            u16 immediate = memory.readWord(m_PC);
-            memory.writeByte(immediate, sp & 0xFF);     // Little endian: low byte first
-            memory.writeByte(immediate + 1, sp >> 8);
-            m_PC += 2;
+            RLCA();
             break;
         }
-        // ADD HL, BC
-        // 1 byte, 8t cycles
+
+        case 0x08: {
+            LD_mn16_SP(memory);
+            break;
+        }
+
         case 0x09: {
-            // must add low bytes L + C then use carry/half carry
-            // for high byte add H + B
-            u16 hl = getHL();
-            u16 bc = getBC();
-            u32 result = static_cast<u32>(hl) + static_cast<u32>(bc);
-
-            m_H = (result >> 8) & 0xFF;
-            m_L = result & 0xFF;
-
-            bool hasCarry = result > 0xFFFF;
-            bool hasHalfCarry = (hl & 0x0FFF) + (bc & 0x0FFF) > 0x0FFF;
-            // set flags
-            setZeroFlag(false);
-            setSubtractionFlag(false);
-            setCarryFlag(hasCarry);
-            setHalfCarryFlag(hasHalfCarry);
+            ADD_HL_BC();
             break;
 
         }
         case 0x0A:
-            LD_A_mBC(m_PC);
+            LD_A_mBC(memory);
             break;
 
+        case 0x0B: {
+            DEC_BC();
+            break;
+        }
+        case 0x0C:
+            INC_C();
+            break;
 
-        // STOP
-        // 2 bytes, 4t cycles
+        case 0x0D:
+            DEC_C();
+            break;
+
+        case 0x0E:
+            LD_C_n8(memory);
+            break;
+
+        case 0x0F: {
+            RRCA();
+            break;
+        }
+
         case 0x10: {
-            m_PC++;
+            STOP();
             break;
-            // read more about STOP instruction:
-            // https://gbdev.io/pandocs/Reducing_Power_Consumption.html#using-the-stop-instruction
         }
 
 
@@ -290,10 +252,14 @@ void CPU::executeInstruction(Memory& memory) {
             break;
         }
 
-        default: {
-            std::cerr << "Opcode Not Yet Implemented: 0x" << std::hex << (int)opcode << std::endl;
+        default:
+            std::cerr << "Opcode Not Implemented: 0x"
+                      << std::hex << static_cast<int>(opcode) << std::endl;
+            std::cerr << "PC: 0x" << std::hex << (m_PC - 1) << std::endl;
+            printCPU();
+            exit(1);
             break;
-        }
+
     }
 
 }

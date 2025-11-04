@@ -47,7 +47,7 @@ constexpr u16 HRAM_END = 0xFFFE;
 constexpr u16 INTERRUPT_ENABLE = 0xFFFF;
 
 constexpr u16 WRAM_SIZE = WRAM_END - WRAM_START + 1; // 0x2000
-constexpr u16 ECHO_RAM_SIZE = ECHO_RAM_END - ECHO_RAM_START + 1; // 0x2000
+constexpr u16 ECHO_RAM_SIZE = ECHO_RAM_END - ECHO_RAM_START + 1; // 0x1E00
 constexpr u8 HRAM_SIZE = HRAM_END - HRAM_START + 1; // 0x7F
 
 
@@ -59,7 +59,7 @@ public:
     void writeByte(u16 address, u8 value);
 
 private:
-    std::array<u8, WRAM_SIZE> m_work_ram;
+    std::array<u8, WRAM_SIZE> m_wram;
     std::array<u8, ECHO_RAM_SIZE> m_echo_ram;
     std::array<u8, HRAM_SIZE> m_hram;
     u8* m_interrupt_enable;
