@@ -69,6 +69,11 @@ private:
     void LD_C_n8(Memory& memory);
     void RRCA();
     void STOP();
+    void LD_DE_n16(Memory& memory);
+    void LD_mDE_A(Memory& memory);
+    void INC_DE();
+    void INC_D();
+
 
     u8 m_A;
     u8 m_B;

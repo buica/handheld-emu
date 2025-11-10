@@ -241,6 +241,46 @@ void CPU::executeInstruction(Memory& memory) {
             break;
         }
 
+        case 0x11:
+            LD_DE_n16(memory);
+            break;
+
+        case 0x12:
+            LD_mDE_A(memory);
+            break;
+
+        case 0x13:
+            INC_DE();
+            break;
+
+        case 0x14:
+            // INC_D();
+            break;
+
+        case 0x15:
+            // DEC_D();
+            break;
+
+        case 0x16:
+            // LD_D_n8(memory);
+            break;
+        case 0x17:
+            // RLA();
+            break;
+
+        case 0x18:
+            // JR_n8(memory);
+            break;
+
+        case 0x19:
+
+            // ADD_HL_DE();
+            break;
+
+        case 0x1A:
+            // LD_A_mDE(memory);
+            break;
+
 
         // HALT
         // 1 byte, 4t cycles
@@ -253,9 +293,7 @@ void CPU::executeInstruction(Memory& memory) {
         }
 
         default:
-            std::cerr << "Opcode Not Implemented: 0x"
-                      << std::hex << static_cast<int>(opcode) << std::endl;
-            std::cerr << "PC: 0x" << std::hex << (m_PC - 1) << std::endl;
+            std::cerr << std::format("Exec Error! Opcode {:#02x} PC: {:#04x}\n", opcode, m_PC - 1);
             printCPU();
             exit(1);
             break;

@@ -4,6 +4,7 @@
 
 
 
+
 Memory::Memory(Cart& cart, IORegisters& ioRegister) : m_cart(cart), m_ioRegister(ioRegister) {
 
 }
@@ -38,18 +39,19 @@ u8 Memory::readByte(u16 address) {
     } else if (address >= OAM_START && address <= OAM_END) {
         // Object attribute memory (OAM)
     } else if (address >= UNUSED_START && address <= UNUSED_END) {
-        // Unused memory. Returns 0s and does nothing.
+        std::cerr << std::format("Using UNUSED memory address: {:#04X}\n", address);
         return 0x00;
     } else if (address >= IO_START && address <= IO_END) {
         // i/o registers
-        // look at i/o ranges
+
+
         // to-do: use switch statements to handle corresponding regs
     } else if (address >= HRAM_START && address <= HRAM_END) {
         // high RAM
     } else if (address == INTERRUPT_ENABLE) {
         // interrupt enable register (IE)
     } else {
-        std::cerr << "Invalid memory address: 0x" << std::hex << std::uppercase << address << std::endl;
+
         return 0xFF; // unmapped memory
     }
 }
@@ -98,6 +100,6 @@ void Memory::writeByte(u16 address, u8 value) {
     } else if (address == INTERRUPT_ENABLE) {
         // interrupt enable register (IE)
     } else {
-        std::cerr << "Invalid memory address: 0x" << std::hex << std::uppercase << address << std::endl;
+        std::cerr << std::format("Using UNUSED memory address: {:#04X}\n", address);
     }
 }
