@@ -141,7 +141,7 @@
     void CPU::INC_C() {
         u8 c = getC();
         u8 new_c = c + 1;
-        setB(new_c);
+        setC(new_c);
 
         setZeroFlag(new_c == 0);
         setSubtractionFlag(false);
@@ -154,7 +154,7 @@
     void CPU::DEC_C() {
         u8 c = getC();
         u8 new_c = c - 1;
-        setB(new_c);
+        setC(new_c);
 
         setZeroFlag(new_c == 0);
         setSubtractionFlag(true);
@@ -216,5 +216,89 @@
 
         m_D = de >> 8;
         m_E = de & 0xFF;
+    }
+
+    // increment D
+    // 1 byte , 4t cycles
+    void CPU::INC_D() {
+        u8 d = getD();
+        u8 new_d = d + 1;
+        setD(new_d);
+
+        setZeroFlag(new_d == 0);
+        setSubtractionFlag(false);
+        bool hasHalfCarry = (d & 0x0F) == 0x0F;
+        setHalfCarryFlag(hasHalfCarry);
+    }
+
+    // 0x15
+    // Decrement D
+    // 1 byte, 4t cycles
+    void CPU::DEC_D() {
+        u8 d = getD();
+        u8 new_d = d - 1;
+        setD(new_d);
+
+        setZeroFlag(new_d == 0);
+        setSubtractionFlag(true);
+        bool hasHalfCarry = (d & 0x0F) == 0x00;
+        setHalfCarryFlag(hasHalfCarry);
+    }
+
+    // LD D, n8: Load 8-bit immediate into D
+    // 2 bytes, 8t cycles
+    void CPU::LD_D_n8(Memory& memory) {
+        u8 val = memory.readByte(m_PC);
+        setD(val);
+        m_PC++;
+    }
+
+    // rotate reg A left through carry flag
+    // 1 byte, 4t cycles
+    void CPU::RLA() {
+        u8 a = getA();
+        u8 carry = (getF() >> 4) & 0x01; // get current carry flag (F register lower nibble contains flags)
+        u8 bit7 = (a & 0x80) >> 7;
+
+        u8 rotatedA = (a << 1) | carry; // carry rotates into bit0
+        setA(rotatedA);
+
+        setCarryFlag(bit7);
+    }
+
+    // Relative jump to signed immediate n8 (-128 to +127)
+    // n8 is 8-bit offset from the address immediately following JR
+    // 2 bytes, 12t cycles
+    void CPU::JR_n8(Memory& memory) {
+        i8 offset = static_cast<i8>(memory.readByte(m_PC));
+        m_PC++; //
+        m_PC += offset;
+    }
+
+    // ADD val in DE to HL
+    // 1 byte, 8t cycles
+    void CPU::ADD_HL_DE() {
+        u16 hl = getHL();
+        u16 de = getDE();
+
+        u32 result = static_cast<u32>(hl) + static_cast<u32>(de);
+        m_H = (result >> 8) & 0xFF;
+        m_L = result & 0xFF;
+
+        bool hasCarry = result > 0xFFFF;
+        bool hasHalfCarry = (hl & 0x0FFF) + (de & 0x0FFF) > 0x0FFF;
+        setZeroFlag(false);
+        setSubtractionFlag(false);
+        setCarryFlag(hasCarry);
+        setHalfCarryFlag(hasHalfCarry);
+    }
+
+    // 0x1A
+    // LD A, (DE): load the byte that address of register DE contains into register A
+    // 1 byte, 8t cycles
+    void CPU::LD_A_mDE(Memory& memory) {
+        u16 address = getDE();
+        u8 val = memory.readByte(address);
+        setA(val);
     }
 

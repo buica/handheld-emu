@@ -73,6 +73,12 @@ private:
     void LD_mDE_A(Memory& memory);
     void INC_DE();
     void INC_D();
+    void DEC_D();
+    void LD_D_n8(Memory& memory);
+    void RLA();
+    void JR_n8(Memory& memory);
+    void ADD_HL_DE();
+    void LD_A_mDE(Memory& memory);
 
 
     u8 m_A;

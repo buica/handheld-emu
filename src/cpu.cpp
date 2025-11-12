@@ -254,32 +254,34 @@ void CPU::executeInstruction(Memory& memory) {
             break;
 
         case 0x14:
-            // INC_D();
+            INC_D();
             break;
 
         case 0x15:
-            // DEC_D();
+            DEC_D();
             break;
 
         case 0x16:
-            // LD_D_n8(memory);
+            LD_D_n8(memory);
             break;
+
         case 0x17:
-            // RLA();
+            RLA();
             break;
 
         case 0x18:
-            // JR_n8(memory);
+            JR_n8(memory);
             break;
 
         case 0x19:
-
-            // ADD_HL_DE();
+            ADD_HL_DE();
             break;
 
         case 0x1A:
-            // LD_A_mDE(memory);
+            LD_A_mDE(memory);
             break;
+
+        case 0x1B:
 
 
         // HALT
