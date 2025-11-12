@@ -270,7 +270,7 @@ void CPU::executeInstruction(Memory& memory) {
             break;
 
         case 0x18:
-            JR_n8(memory);
+            JR_e8(memory);
             break;
 
         case 0x19:

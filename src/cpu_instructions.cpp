@@ -266,13 +266,13 @@
         setCarryFlag(bit7);
     }
 
-    // Relative jump to signed immediate n8 (-128 to +127)
-    // n8 is 8-bit offset from the address immediately following JR
+    // Relative jump to signed immediate e8 (-128 to +127)
+    // e8 is 8-bit offset from the address immediately following JR
     // 2 bytes, 12t cycles
-    void CPU::JR_n8(Memory& memory) {
+    void CPU::JR_e8(Memory& memory) {
         i8 offset = static_cast<i8>(memory.readByte(m_PC));
-        m_PC++; //
-        m_PC += offset;
+        m_PC++;
+        m_PC += offset; // target addresss
     }
 
     // ADD val in DE to HL

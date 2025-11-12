@@ -76,7 +76,7 @@ private:
     void DEC_D();
     void LD_D_n8(Memory& memory);
     void RLA();
-    void JR_n8(Memory& memory);
+    void JR_e8(Memory& memory);
     void ADD_HL_DE();
     void LD_A_mDE(Memory& memory);
 
