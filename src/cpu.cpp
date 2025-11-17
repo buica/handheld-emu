@@ -130,6 +130,26 @@ void CPU::setCarryFlag(bool set) {
     }
 }
 
+bool CPU::getZeroFlag() const {
+    u8 zero_bit = (getF() >> 7) & 0x01; // flag bits reside in F register
+    return zero_bit != 0;
+}
+
+bool CPU::getSubtractionFlag() const {
+    u8 subtraction_bit = (getF() >> 6) & 0x01;
+    return subtraction_bit != 0;
+}
+
+bool CPU::getHalfCarryFlag() const {
+    u8 halfcarry_bit = (getF() >> 5) & 0x01;
+    return halfcarry_bit != 0;
+}
+
+bool CPU::getCarryFlag() const {
+    u8 carry_bit = (getF() >> 4) & 0x01;
+    return carry_bit != 0;
+}
+
 
 /*
  * Initialize registers to boot values WIP
@@ -282,6 +302,48 @@ void CPU::executeInstruction(Memory& memory) {
             break;
 
         case 0x1B:
+            DEC_DE();
+            break;
+
+        case 0x1C:
+            INC_E();
+            break;
+
+        case 0x1D:
+            DEC_E();
+            break;
+
+        case 0x1E:
+            LD_E_n8(memory);
+            break;
+
+        case 0x1F:
+            RRA();
+            break;
+
+        case 0x20:
+            JR_NZ_e8(memory);
+            break;
+
+        case 0x21:
+            LD_HL_n16(memory);
+            break;
+
+        case 0x22:
+            LD_mHLp_A(memory);
+            break;
+
+        case 0x23:
+            INC_HL();
+            break;
+
+        case 0x24:
+            INC_H();
+            break;
+
+        case 0x25:
+            DEC_H();
+            break;
 
 
         // HALT

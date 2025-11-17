@@ -5,9 +5,7 @@
 
     // 0x00 No operation
     // 1 byte (taken care of by PC++), 4t cycles (4 t-cycles = 1 machine cycle)
-    void CPU::NOP() {
-        // No operation
-    }
+    void CPU::NOP() {}
 
     // LD BC, n16: Load 16-bit immediate into BC
     // 3 bytes (PC++ then +2), 12t cycles
@@ -195,7 +193,6 @@
     // 3 bytes, 12t cycles
     void CPU::LD_DE_n16(Memory& memory) {
         u16 val = memory.readWord(m_PC);
-
         m_D = val >> 8;
         m_E = val & 0xFF;
         m_PC += 2;
@@ -257,11 +254,11 @@
     // 1 byte, 4t cycles
     void CPU::RLA() {
         u8 a = getA();
-        u8 carry = (getF() >> 4) & 0x01; // get current carry flag (F register lower nibble contains flags)
+        u8 carry_bit = (getF() >> 4) & 0x01; // get current carry flag (F register lower nibble contains flags)
         u8 bit7 = (a & 0x80) >> 7;
 
-        u8 rotatedA = (a << 1) | carry; // carry rotates into bit0
-        setA(rotatedA);
+        u8 rotated_a = (a << 1) | carry_bit; // carry rotates into bit0
+        setA(rotated_a);
 
         setCarryFlag(bit7);
     }
@@ -302,3 +299,150 @@
         setA(val);
     }
 
+    // Decrement DE
+    // 1 byte, 8t cycles
+    void CPU::DEC_DE() {
+        u16 de = getDE();
+        de--;
+        m_D = de >> 8;
+        m_E = de & 0xFF;
+    }
+
+    // increment E
+    // 1 byte , 4t cycles
+    void CPU::INC_E() {
+        u8 e = getE();
+        u8 new_e = e + 1;
+        setE(new_e);
+
+        setZeroFlag(new_e == 0);
+        setSubtractionFlag(false);
+        bool hasHalfCarry = (e & 0x0F) == 0x0F;
+        setHalfCarryFlag(hasHalfCarry);
+    }
+
+    // decrement E
+    // 1 byte, 4t cycles
+    void CPU::DEC_E() {
+        u8 e = getE();
+        u8 new_e = e - 1;
+        setE(new_e);
+
+        setZeroFlag(new_e == 0);
+        setSubtractionFlag(true);
+        bool hasHalfCarry = (e & 0x0F) == 0x00;
+        setHalfCarryFlag(hasHalfCarry);
+    }
+
+    // LD E, n8: Load 8-bit immediate into E
+    // 2 bytes, 8t cycles
+    void CPU::LD_E_n8(Memory& memory) {
+        u8 val = memory.readByte(m_PC);
+        setE(val);
+        m_PC++;
+    }
+
+    // rotate reg A right through carry flag
+    // 1 byte, 4t cycles
+    void CPU::RRA() {
+        u8 a = getA();
+        u8 carry = (getF() >> 4) & 0x01; // get current carry flag (F register lower nibble contains flags)
+        u8 bit0 = a & 0x01;
+
+        u8 rotatedA = (a >> 1) | (carry << 7); // carry rotates into bit7
+        setA(rotatedA);
+
+        setCarryFlag(bit0);
+    }
+
+    // relative jump to signed 8-bit immediate if Z flag is not set
+    // 2 bytes, 12t cycles if jump happens, 8t if no jump
+    void CPU::JR_NZ_e8(Memory& memory) {
+        i8 offset = static_cast<i8>(memory.readByte(m_PC));
+        m_PC++;
+
+        if (!getZeroFlag()) {
+            m_PC += offset;
+        }
+    }
+
+    // Load 16-bit immediate into HL
+    // 3 bytes, 12t cycles
+    void CPU::LD_HL_n16(Memory& memory) {
+        u16 val = memory.readWord(m_PC);
+        m_H = val >> 8;
+        m_L = val & 0xFF;
+        m_PC++;
+    }
+
+    // load A into address pointed to by HL then post-increment HL
+    // 1 byte, 8t cycles
+    void CPU::LD_mHLp_A(Memory& memory) {
+
+    }
+
+    // increment HL
+    // 1 byte, 8t cycles
+    void CPU::INC_HL() {
+        u16 hl = getHL();
+        hl++;
+        m_H = hl >> 8;
+        m_L = hl & 0xFF;
+    }
+
+    // increment H
+    // 1 byte , 4t cycles
+    void CPU::INC_H() {
+        u8 h = getH();
+        u8 new_h = h + 1;
+
+        setH(new_h);
+        setZeroFlag(new_h == 0);
+        setSubtractionFlag(false);
+        bool hasHalfCarry = (h & 0x0F) == 0x0F;
+        setHalfCarryFlag(hasHalfCarry);
+    }
+
+    // 0x25
+    // decrement H
+    // 1 byte, 4t cycles
+    void CPU::DEC_H() {
+        u8 h = getH();
+        u8 new_h = h - 1;
+
+        setH(new_h);
+        setZeroFlag(new_h == 0);
+        setSubtractionFlag(true);
+        bool hasHalfCarry = (h & 0x0F) == 0x0F;
+        setHalfCarryFlag(hasHalfCarry);
+    }
+
+    // Load 8-bit immediate into H
+    // 2 bytes, 8t cycles
+    void CPU::LD_H_n8(Memory& memory) {
+        u8 val = memory.readByte(m_PC);
+        setH(val);
+        m_PC++;
+    }
+
+    // Decimal Adjust Accumulator
+    // 1 byte, 4t cycles
+    // Behavior depends on the state of subtraction N flag:
+    // if N flag is set
+    //   - init adjustment to 0
+    //   - if H flag is set, add 0x06 to adjustment
+    //   - if C flag is set, add 0x60 to adjustment
+    //   - subtract adjustment from A
+    // if N flag is not set
+    //   - init adjustment to 0
+    //   - if H flag is set or A & 0x0F > 9, add 0x06 to adjustment
+    //   - if C flag is set or A > 0x99, add 0x60 to adjustment
+    //   - add adjustment to A
+    // - set Z flag if A is zero
+    void CPU::DAA() {
+        u8 a = getA();
+        u8 correction = 0;
+
+
+
+    }

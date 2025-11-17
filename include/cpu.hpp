@@ -47,6 +47,11 @@ public:
     void setHalfCarryFlag(bool set);
     void setCarryFlag(bool set);
 
+    bool getZeroFlag() const;
+    bool getSubtractionFlag() const;
+    bool getHalfCarryFlag() const;
+    bool getCarryFlag() const;
+
 private:
     void initRegisters();
     u8 fetchInstruction(Memory& memory);
@@ -79,6 +84,21 @@ private:
     void JR_e8(Memory& memory);
     void ADD_HL_DE();
     void LD_A_mDE(Memory& memory);
+    void DEC_DE();
+    void INC_E();
+    void DEC_E();
+    void LD_E_n8(Memory& memory);
+    void RRA();
+    void JR_NZ_e8(Memory& memory);
+    void LD_HL_n16(Memory& memory);
+    void LD_mHLp_A(Memory& memory);
+    void INC_HL();
+    void INC_H();
+    void DEC_H();
+    void LD_H_n8(Memory& memory);
+    void DAA();
+    void JR_Z_e8(Memory& memory);
+    void ADD_HL_HL();
 
 
     u8 m_A;
