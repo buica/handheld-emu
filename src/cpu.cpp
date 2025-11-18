@@ -345,6 +345,22 @@ void CPU::executeInstruction(Memory& memory) {
             DEC_H();
             break;
 
+        case 0x26:
+            LD_H_n8(memory);
+            break;
+
+        case 0x27:
+            DAA();
+            break;
+
+        case 0x28:
+            JR_Z_e8(memory);
+            break;
+        case 0x29:
+            ADD_HL_HL();
+            break;
+
+
 
         // HALT
         // 1 byte, 4t cycles
