@@ -45,33 +45,59 @@ u16 CPU::getHL() const { return (static_cast<u16>(m_H) << 8) | m_L; }
 u16 CPU::getSP() const { return m_SP; }
 u16 CPU::getPC() const { return m_PC; }
 
-void CPU::setA(u8 value) {
-    m_A = value;
+void CPU::setA(u8 val) {
+    m_A = val;
 }
-void CPU::setB(u8 value) {
-    m_B = value;
+void CPU::setB(u8 val) {
+    m_B = val;
 }
-void CPU::setC(u8 value) {
-    m_C = value;
+void CPU::setC(u8 val) {
+    m_C = val;
 }
-void CPU::setD(u8 value) {
-    m_D = value;
+void CPU::setD(u8 val) {
+    m_D = val;
 }
-void CPU::setE(u8 value) {
-    m_E = value;
-}
-
-void CPU::setF(u8 value) {
-    m_F = value;
-}
-void CPU::setH(u8 value) {
-    m_H = value;
-}
-void CPU::setL(u8 value) {
-    m_L = value;
+void CPU::setE(u8 val) {
+    m_E = val;
 }
 
-// TODO: implement the other flag bits setters
+void CPU::setF(u8 val) {
+    m_F = val;
+}
+void CPU::setH(u8 val) {
+    m_H = val;
+}
+void CPU::setL(u8 val) {
+    m_L = val;
+}
+
+void CPU::setAF(u16 val) {
+    m_A = static_cast<u8>(val >> 8);
+    m_F = static_cast<u8>(val & 0xFF);
+}
+
+void CPU::setBC(u16 val) {
+    m_B = static_cast<u8>(val >> 8);
+    m_C = static_cast<u8>(val & 0xFF);
+}
+
+void CPU::setDE(u16 val) {
+    m_D = static_cast<u8>(val >> 8);
+    m_E = static_cast<u8>(val & 0xFF);
+}
+
+void CPU::setHL(u16 val) {
+    m_H = static_cast<u8>(val >> 8);
+    m_L = static_cast<u8>(val & 0xFF);
+}
+
+void CPU::setSP(u16 val) {
+    m_SP = val;
+}
+
+void CPU::setPC(u16 val) {
+    m_PC = val;
+}
 
 /**
  * @brief Sets or clears the Zero Flag (Z) in the F register.
@@ -150,9 +176,8 @@ bool CPU::getCarryFlag() const {
     return carry_bit != 0;
 }
 
-
 /*
- * Initialize registers to boot values WIP
+ * Initialize registers to boot vals WIP
  */
 void CPU::initRegisters() {
     m_A = 0x00;
@@ -356,10 +381,97 @@ void CPU::executeInstruction(Memory& memory) {
         case 0x28:
             JR_Z_e8(memory);
             break;
+
         case 0x29:
             ADD_HL_HL();
             break;
+        case 0x2A:
+            LD_A_mHL_inc(memory);
+            break;
 
+        case 0x2B:
+            DEC_HL();
+            break;
+
+        case 0x2C:
+            INC_L();
+            break;
+
+        case 0x2D:
+            DEC_L();
+            break;
+
+        case 0x2E:
+            LD_L_n8(memory);
+            break;
+
+        case 0x2F:
+            CPL();
+            break;
+
+        case 0x30:
+            JR_NC_e8(memory);
+            break;
+
+        case 0x31:
+            LD_SP_n16(memory);
+            break;
+
+        case 0x32:
+            LD_mHLm_A(memory);
+            break;
+
+        case 0x33:
+            INC_SP();
+            break;
+
+        case 0x34:
+            INC_mHL();
+            break;
+
+        case 0x35:
+            DEC_mHL();
+            break;
+
+        case 0x36:
+            LD_mHL_n8(memory);
+            break;
+
+        case 0x37:
+            SCF();
+            break;
+
+        case 0x38:
+            JR_C_e8(memory);
+            break;
+
+        case 0x39:
+            ADD_HL_SP();
+            break;
+
+        case 0x3A:
+            LD_A_mHL_dec(memory);
+            break;
+
+        case 0x3B:
+            DEC_SP();
+            break;
+
+        case 0x3C:
+            INC_A();
+            break;
+
+        case 0x3D:
+            DEC_A();
+            break;
+
+        case 0x3E:
+            LD_A_n8(memory);
+            break;
+
+        case 0x3F:
+            CCF();
+            break;
 
 
         // HALT

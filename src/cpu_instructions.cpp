@@ -2,8 +2,22 @@
 #include "../include/memory.hpp"
 
 
+// TODO
+// - add helpers for flag setting for common ops
+// i.e. flags_inc_r8, flags_dec_r8, flags_add_A_r8, etc.
 
-// 0x00 No operation
+// flag helpers WIP
+void CPU::set_Flags_INC_r8(u8 old_val, u8 new_val) {
+    setZeroFlag(new_val == 0);
+    setSubtractionFlag(false);
+    bool hasHalfCarry = (old_val & 0x0F) + 1 > 0x0F;
+    setHalfCarryFlag(hasHalfCarry);
+}
+
+
+
+// 0x00
+// No Operation
 // 1 byte (taken care of by PC++), 4t cycles (4 t-cycles = 1 machine cycle)
 void CPU::NOP() {}
 
@@ -11,9 +25,7 @@ void CPU::NOP() {}
 // 3 bytes (PC++ then +2), 12t cycles
 void CPU::LD_BC_n16(Memory& memory) {
     u16 val = memory.readWord(m_PC);
-
-    m_B = val >> 8;
-    m_C = val & 0xFF;
+    setBC(val);
     m_PC += 2;
 }
 
@@ -29,9 +41,7 @@ void CPU::LD_mBC_A(Memory& memory) {
 void CPU::INC_BC() {
     u16 bc = getBC();
     bc++;
-    // assign relevant bytes back to B and C
-    m_B = bc >> 8; // keep upper 8 bits
-    m_C = bc & 0xFF; // mask upper 8 bits to keep lower 8 bits
+    setBC(bc);
 }
 
 // increment B
@@ -48,7 +58,8 @@ void CPU::INC_B() {
     setHalfCarryFlag(hasHalfCarry);
 }
 
-// 0x05 decrement B
+// 0x05
+// decrement B
 // 1 byte, 4t cycles
 // Z, 1, H, -s
 void CPU::DEC_B() {
@@ -266,7 +277,7 @@ void CPU::RLA() {
 void CPU::JR_e8(Memory& memory) {
     i8 offset = static_cast<i8>(memory.readByte(m_PC));
     m_PC++;
-    m_PC += offset; // target addresss
+    m_PC += offset; // target address
 }
 
 // ADD val in DE to HL
@@ -441,9 +452,31 @@ void CPU::LD_H_n8(Memory& memory) {
 void CPU::DAA() {
     u8 a = getA();
     u8 adjustment = 0;
+
+    if (getSubtractionFlag()) {
+        if (getHalfCarryFlag()) {
+           adjustment += 0x06;
+        }
+        if (getCarryFlag()) {
+           adjustment += 0x60;
+        }
+        a -= adjustment;
+    } else {
+        if (getHalfCarryFlag() || (a & 0x0F) > 9) {
+            adjustment += 0x06;
+        }
+        if (getCarryFlag() || a > 0x99) {
+            adjustment += 0x60;
+        }
+        a += adjustment;
+    }
+
+    setZeroFlag(a == 0);
+    setHalfCarryFlag(false);
+    setCarryFlag(adjustment >= 0x60);
 }
 
-// relative jump to signed 8-bit immediate if Z flag is set
+// relative jump to  signed 8-bit immediate if Z flag is set
 // 2 bytes, 12t cycles if jump, 8t if no jump
 void CPU::JR_Z_e8(Memory& memory) {
     i8 offset = static_cast<i8>(memory.readByte(m_PC));
@@ -454,3 +487,197 @@ void CPU::JR_Z_e8(Memory& memory) {
     }
 }
 
+// add HL to HL
+// 1 byte, 8t cycles
+void CPU::ADD_HL_HL() {
+    u16 hl = getHL();
+    u32 result = static_cast<u32>(hl) + static_cast<u32>(hl);
+    m_H = (result >> 8) & 0xFF;
+    m_L = result & 0xFF;
+
+    setSubtractionFlag(false);
+    // Z80 has half-carry boundary at bit 11 for 16-bit adds
+    bool hasHalfCarry = (hl & 0x0FFF) + (hl & 0x0FFF) > 0x0FFF;
+    setHalfCarryFlag(hasHalfCarry);
+    bool hasCarry = result > 0xFFFF;
+    setCarryFlag(hasCarry);
+}
+
+// 0x2A
+//LD A, (memory)HL(plus)
+// Load byte at address pointed to by HL into A then post-increment HL
+// 1 byte, 8t cycles
+void CPU::LD_A_mHL_inc(Memory& memory) {
+    u16 address = getHL();
+    u8 val = memory.readByte(address);
+    setA(val);
+    INC_HL();
+}
+
+// decrement HL
+// 1 byte, 8t cycles
+void CPU::DEC_HL() {
+    u16 hl = getHL();
+    hl--;
+    m_H = hl >> 8;
+    m_L = hl & 0xFF;
+}
+
+// increment L
+// 1 byte , 4t cycles
+void CPU::INC_L() {
+    u8 l = getL();
+    u8 new_l = l + 1;
+    setL(new_l);
+
+    setZeroFlag(new_l == 0);
+    setSubtractionFlag(false);
+    bool hasHalfCarry = (l & 0x0F) == 0x0F;
+    setHalfCarryFlag(hasHalfCarry);
+}
+
+// decrement L
+// 1 byte, 4t cycles
+void CPU::DEC_L() {
+    u8 l = getL();
+    u8 new_l = l - 1;
+    setL(new_l);
+
+    setZeroFlag(new_l == 0);
+    setSubtractionFlag(true);
+    bool hasHalfCarry = (l & 0x0F) == 0x00;
+    setHalfCarryFlag(hasHalfCarry);
+}
+
+// LD L, n8: Load 8-bit immediate into L
+// 2 bytes, 8t cycles
+void CPU::LD_L_n8(Memory& memory) {
+    u8 val = memory.readByte(m_PC);
+    setL(val);
+    m_PC++;
+}
+
+// complement accumulator A (aka bitwise NOT)
+// 1 byte, 4t cycles
+void CPU::CPL() {
+    u8 a = getA();
+    u8 notA = ~a;
+    setA(notA);
+
+    setSubtractionFlag(true);
+    setHalfCarryFlag(true);
+}
+
+// 0x30
+// relative jump to signed 8-bit immediate if C flag is not set
+// 2 bytes, 12t cycles if jump, 8t if no jump
+void CPU::JR_NC_e8(Memory& memory) {
+    i8 offset = static_cast<i8>(memory.readByte(m_PC));
+    m_PC++;
+
+    if (!getCarryFlag()) {
+        m_PC += offset;
+    }
+}
+
+// Load 16-bit immediate into SP
+// 3 bytes, 12t cycles
+void CPU::LD_SP_n16(Memory& memory) {
+}
+
+// store register A into address pointed to by HL, then decrement HL
+// 1 byte, 8t cycles
+void CPU::LD_mHLm_A(Memory& memory) {
+}
+
+// increment SP
+// 1 byte, 8t cycles
+void CPU::INC_SP() {
+    setSP(getSP() + 1);
+}
+
+// increment value at memory address in HL
+// 1 byte , 12t cycles
+void CPU::INC_mHL(Memory& memory {
+    u16 address = getHL();
+    u16 val = memory.readByte(address);
+    u16 new_val = val + 1;
+    memory.writeByte(address, new_val);
+
+    setZeroFlag(new_val == 0);
+    setSubtractionFlag(false);
+    bool hasHalfCarry = (val & 0x0F) == 0x0F;
+    setHalfCarryFlag(hasHalfCarry);
+}
+
+//0x35
+// decrement value at memory address in HL
+// 1 byte, 12t cycles
+void CPU::DEC_mHL() {
+}
+
+// Load 8-bit immediate into address pointed to by HL
+// 2 bytes, 12t cycles
+void CPU::LD_mHL_n8(Memory& memory) {
+}
+
+// set carry flag
+// 1 byte, 4t cycles
+void CPU::SCF() {
+    setCarryFlag(true);
+}
+
+// relative jump to signed 8-bit immediate if carry flag set
+// 2 bytes, 12t cycles if jump, 8t if no jump
+void JR_C_e8(Memory& memory) {
+
+}
+
+// add SP to HL
+// 1 byte, 8t cycles
+void CPU::ADD_HL_SP() {
+}
+
+// 0x3A
+// load the byte at address pointed to by HL into A then post-decrement HL
+// 1 byte, 8t cycles
+void CPU::LD_A_mHL_dec(Memory& memory) {
+}
+
+// decrement SP
+// 1 byte, 8t cycles
+void CPU::DEC_SP() {
+    setSP(getSP() - 1);
+}
+
+// increment A
+// 1 byte , 4t cycles
+void CPU::INC_A() {
+    u8 a = getA();
+    u8 new_a = a + 1;
+    setA(new_a);
+
+    setZeroFlag(new_a == 0);
+    setSubtractionFlag(false);
+    bool hasHalfCarry = (a & 0x0F) == 0x0F;
+    setHalfCarryFlag(hasHalfCarry);
+}
+
+// decrement A
+// 1 byte, 4t cycles
+void CPU::DEC_A() {
+}
+
+// Load 8-bit immediate into A
+void CPU::LD_A_n8(Memory& memory) {
+}
+
+// 0x3F
+// complement carry flag
+void CPU::CCF() {
+    if (getCarryFlag()) {
+        setCarryFlag(false);
+    } else {
+        setCarryFlag(true);
+    }
+}

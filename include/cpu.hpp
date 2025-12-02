@@ -41,6 +41,12 @@ public:
     void setF(u8 value);
     void setH(u8 value);
     void setL(u8 value);
+    void setAF(u16 value);
+    void setBC(u16 value);
+    void setDE(u16 value);
+    void setHL(u16 value);
+    void setSP(u16 value);
+    void setPC(u16 value);
 
     void setZeroFlag(bool set);
     void setSubtractionFlag(bool set);
@@ -51,6 +57,8 @@ public:
     bool getSubtractionFlag() const;
     bool getHalfCarryFlag() const;
     bool getCarryFlag() const;
+
+    void set_Flags_INC_r8(u8 old_val, u8 new_val);
 
 private:
     void initRegisters();
@@ -99,7 +107,28 @@ private:
     void DAA();
     void JR_Z_e8(Memory& memory);
     void ADD_HL_HL();
-
+    void LD_A_mHL_inc(Memory& memory);
+    void DEC_HL();
+    void INC_L();
+    void DEC_L();
+    void LD_L_n8(Memory& memory);
+    void CPL();
+    void JR_NC_e8(Memory& memory);
+    void LD_SP_n16(Memory& memory);
+    void LD_mHLm_A(Memory& memory);
+    void INC_SP();
+    void INC_mHL();
+    void DEC_mHL();
+    void LD_mHL_n8(Memory& memory);
+    void SCF();
+    void JR_C_e8(Memory& memory);
+    void ADD_HL_SP();
+    void LD_A_mHL_dec(Memory& memory);
+    void DEC_SP();
+    void INC_A();
+    void DEC_A();
+    void LD_A_n8(Memory& memory);
+    void CCF();
 
     u8 m_A;
     u8 m_B;
