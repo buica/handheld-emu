@@ -99,7 +99,7 @@ private:
     void RRA();
     void JR_NZ_e8(Memory& memory);
     void LD_HL_n16(Memory& memory);
-    void LD_mHLp_A(Memory& memory);
+    void LD_mHLinc_A(Memory& memory);
     void INC_HL();
     void INC_H();
     void DEC_H();
@@ -107,7 +107,7 @@ private:
     void DAA();
     void JR_Z_e8(Memory& memory);
     void ADD_HL_HL();
-    void LD_A_mHL_inc(Memory& memory);
+    void LD_A_mHLinc(Memory& memory);
     void DEC_HL();
     void INC_L();
     void DEC_L();
@@ -115,20 +115,31 @@ private:
     void CPL();
     void JR_NC_e8(Memory& memory);
     void LD_SP_n16(Memory& memory);
-    void LD_mHLm_A(Memory& memory);
+    void LD_mHLdec_A(Memory& memory);
     void INC_SP();
-    void INC_mHL();
-    void DEC_mHL();
+    void INC_mHL(Memory& memory);
+    void DEC_mHL(Memory& memory);
     void LD_mHL_n8(Memory& memory);
     void SCF();
     void JR_C_e8(Memory& memory);
     void ADD_HL_SP();
-    void LD_A_mHL_dec(Memory& memory);
+    void LD_A_mHLdec(Memory& memory);
     void DEC_SP();
     void INC_A();
     void DEC_A();
     void LD_A_n8(Memory& memory);
     void CCF();
+    void LD_B_B();
+    void LD_B_C();
+    void LD_B_D();
+    void LD_B_E();
+    void LD_B_H();
+    void LD_B_L();
+
+    void HALT();
+
+    void RET();
+
 
     u8 m_A;
     u8 m_B;

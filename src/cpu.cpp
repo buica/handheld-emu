@@ -355,7 +355,7 @@ void CPU::executeInstruction(Memory& memory) {
             break;
 
         case 0x22:
-            LD_mHLp_A(memory);
+            LD_mHLinc_A(memory);
             break;
 
         case 0x23:
@@ -386,7 +386,7 @@ void CPU::executeInstruction(Memory& memory) {
             ADD_HL_HL();
             break;
         case 0x2A:
-            LD_A_mHL_inc(memory);
+            LD_A_mHLinc(memory);
             break;
 
         case 0x2B:
@@ -418,7 +418,7 @@ void CPU::executeInstruction(Memory& memory) {
             break;
 
         case 0x32:
-            LD_mHLm_A(memory);
+            LD_mHLdec_A(memory);
             break;
 
         case 0x33:
@@ -426,11 +426,11 @@ void CPU::executeInstruction(Memory& memory) {
             break;
 
         case 0x34:
-            INC_mHL();
+            INC_mHL(memory);
             break;
 
         case 0x35:
-            DEC_mHL();
+            DEC_mHL(memory);
             break;
 
         case 0x36:
@@ -450,7 +450,7 @@ void CPU::executeInstruction(Memory& memory) {
             break;
 
         case 0x3A:
-            LD_A_mHL_dec(memory);
+            LD_A_mHLdec(memory);
             break;
 
         case 0x3B:
@@ -476,13 +476,17 @@ void CPU::executeInstruction(Memory& memory) {
 
         // HALT
         // 1 byte, 4t cycles
-        case 0x76: {
+        case 0x76:
             // enter low power mode until an interrupt occurs
             // for now, just print and exit
             std::cout << "HALT encountered. Exiting." << std::endl;
             exit(0);
             break;
-        }
+
+
+        case 0xC9:
+            RET();
+            break;
 
         default:
             std::cerr << std::format("Exec Error! Opcode {:#02x} PC: {:#04x}\n", opcode, m_PC - 1);

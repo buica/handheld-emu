@@ -312,8 +312,7 @@ void CPU::LD_A_mDE(Memory& memory) {
 void CPU::DEC_DE() {
     u16 de = getDE();
     de--;
-    m_D = de >> 8;
-    m_E = de & 0xFF;
+    setDE(de);
 }
 
 // increment E
@@ -385,7 +384,7 @@ void CPU::LD_HL_n16(Memory& memory) {
 
 // load val in reg A into address pointed to by HL then post-increment HL
 // 1 byte, 8t cycles
-void CPU::LD_mHLp_A(Memory& memory) {
+void CPU::LD_mHLinc_A(Memory& memory) {
     u16 address = getHL();
     memory.writeByte(address, m_A);
     INC_HL();
@@ -405,8 +404,8 @@ void CPU::INC_HL() {
 void CPU::INC_H() {
     u8 h = getH();
     u8 new_h = h + 1;
-
     setH(new_h);
+
     setZeroFlag(new_h == 0);
     setSubtractionFlag(false);
     bool hasHalfCarry = (h & 0x0F) == 0x0F;
@@ -507,7 +506,7 @@ void CPU::ADD_HL_HL() {
 //LD A, (memory)HL(plus)
 // Load byte at address pointed to by HL into A then post-increment HL
 // 1 byte, 8t cycles
-void CPU::LD_A_mHL_inc(Memory& memory) {
+void CPU::LD_A_mHLinc(Memory& memory) {
     u16 address = getHL();
     u8 val = memory.readByte(address);
     setA(val);
@@ -519,8 +518,7 @@ void CPU::LD_A_mHL_inc(Memory& memory) {
 void CPU::DEC_HL() {
     u16 hl = getHL();
     hl--;
-    m_H = hl >> 8;
-    m_L = hl & 0xFF;
+    setHL(hl);
 }
 
 // increment L
@@ -583,11 +581,17 @@ void CPU::JR_NC_e8(Memory& memory) {
 // Load 16-bit immediate into SP
 // 3 bytes, 12t cycles
 void CPU::LD_SP_n16(Memory& memory) {
+    u16 val = memory.readWord(m_PC);
+    setSP(val);
+    m_PC += 2;
 }
 
 // store register A into address pointed to by HL, then decrement HL
 // 1 byte, 8t cycles
-void CPU::LD_mHLm_A(Memory& memory) {
+void CPU::LD_mHLdec_A(Memory& memory) {
+    u16 address = getHL();
+    memory.writeByte(address, m_A);
+    DEC_HL();
 }
 
 // increment SP
@@ -598,7 +602,7 @@ void CPU::INC_SP() {
 
 // increment value at memory address in HL
 // 1 byte , 12t cycles
-void CPU::INC_mHL(Memory& memory {
+void CPU::INC_mHL(Memory& memory) {
     u16 address = getHL();
     u16 val = memory.readByte(address);
     u16 new_val = val + 1;
@@ -613,36 +617,75 @@ void CPU::INC_mHL(Memory& memory {
 //0x35
 // decrement value at memory address in HL
 // 1 byte, 12t cycles
-void CPU::DEC_mHL() {
+void CPU::DEC_mHL(Memory& memory) {
+    u16 address = getHL();
+    u16 val = memory.readByte(address);
+    u16 new_val = val - 1;
+    memory.writeByte(address, new_val);
+
+    setZeroFlag(new_val == 0);
+    setSubtractionFlag(true);
+    bool hasHalfCarry = (val & 0x0F) == 0x00;
+    setHalfCarryFlag(hasHalfCarry);
 }
 
 // Load 8-bit immediate into address pointed to by HL
 // 2 bytes, 12t cycles
 void CPU::LD_mHL_n8(Memory& memory) {
+    u8 val = memory.readByte(m_PC);
+    u16 address = getHL();
+    memory.writeByte(address, val);
+    m_PC++;
 }
 
 // set carry flag
 // 1 byte, 4t cycles
 void CPU::SCF() {
     setCarryFlag(true);
+
+    setSubtractionFlag(false);
+    setHalfCarryFlag(false);
 }
 
 // relative jump to signed 8-bit immediate if carry flag set
 // 2 bytes, 12t cycles if jump, 8t if no jump
-void JR_C_e8(Memory& memory) {
+void CPU::JR_C_e8(Memory& memory) {
+    i8 offset = static_cast<i8>(memory.readByte(m_PC));
+    m_PC++;
 
+    if (getCarryFlag()) {
+        m_PC += offset;
+    }
 }
 
 // add SP to HL
 // 1 byte, 8t cycles
 void CPU::ADD_HL_SP() {
+    u16 hl = getHL();
+    u16 sp = getSP();
+
+    u32 result = static_cast<u32>(hl) + static_cast<u32>(sp);
+    m_H = (result >> 8) & 0xFF;
+    m_L = result & 0xFF;
+
+    setZeroFlag(false);
+    setSubtractionFlag(false);
+    bool hasHalfCarry = (hl & 0x0FFF) + (sp & 0x0FFF) > 0x0FFF;
+    setHalfCarryFlag(hasHalfCarry);
+    bool hasCarry = result > 0xFFFF;
+    setCarryFlag(hasCarry);
 }
 
 // 0x3A
 // load the byte at address pointed to by HL into A then post-decrement HL
 // 1 byte, 8t cycles
-void CPU::LD_A_mHL_dec(Memory& memory) {
+void CPU::LD_A_mHLdec(Memory& memory) {
+    u16 address = getHL();
+    u8 val = memory.readWord(address);
+    setA(val);
+    DEC_HL();
 }
+
 
 // decrement SP
 // 1 byte, 8t cycles
@@ -666,14 +709,27 @@ void CPU::INC_A() {
 // decrement A
 // 1 byte, 4t cycles
 void CPU::DEC_A() {
+    u8 a = getA();
+    u8 new_a = a - 1;
+    setA(new_a);
+
+    setZeroFlag(new_a == 0);
+    setSubtractionFlag(true);
+    bool hasHalfCarry = (a & 0x0F) == 0x00;
+    setHalfCarryFlag(hasHalfCarry);
 }
 
 // Load 8-bit immediate into A
+// 2 bytes, 8t cycles
 void CPU::LD_A_n8(Memory& memory) {
+    u8 val = memory.readByte(m_PC);
+    setA(val);
+    m_PC++;
 }
 
 // 0x3F
 // complement carry flag
+// 1 byte, 4t cycles
 void CPU::CCF() {
     if (getCarryFlag()) {
         setCarryFlag(false);
@@ -681,3 +737,18 @@ void CPU::CCF() {
         setCarryFlag(true);
     }
 }
+
+// 0x40
+// LD B, B: Load register B into register B (NOP)
+// 1 byte, 4t cycles
+void CPU::LD_B_B() {
+}
+
+
+
+// 0x76
+// HALT: Enter CPU low-power mode until an interrupt occurs
+// 1 byte, 4t cycles
+void CPU::HALT() {
+}
+
