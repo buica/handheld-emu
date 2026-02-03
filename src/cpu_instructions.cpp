@@ -742,7 +742,212 @@ void CPU::CCF() {
 // LD B, B: Load register B into register B (NOP)
 // 1 byte, 4t cycles
 void CPU::LD_B_B() {
+    // no operation
 }
+
+// load register C into register B
+// 1 byte, 4t cycles
+void CPU::LD_B_C() {
+    u8 c = getC();
+    setB(c);
+}
+
+// load register D into register B
+// 1 byte, 4t cycles
+void CPU::LD_B_D() {
+    u8 d = getD();
+    setB(d);
+}
+
+// load register E into register B
+// 1 byte, 4t cycles
+void CPU::LD_B_E() {
+    u8 e = getE();
+    setB(e);
+}
+
+// load register H into register B
+// 1 byte, 4t cycles
+void CPU::LD_B_H() {
+    u8 h = getH();
+    setB(h);
+}
+
+// 0x45
+// load register L into register B
+// 1 byte, 4t cycles
+void CPU::LD_B_L() {
+    u8 l = getL();
+    setB(l);
+}
+
+// load byte at address pointed to by HL into register B
+// 1 byte, 8t cycles
+void CPU::LD_B_mHL(Memory& memory) {
+    u8 address = getHL();
+    u8 val = memory.readByte(address);
+    setB(val);
+}
+
+// load register A into register B
+// 1 byte, 4t cycles
+void CPU::LD_B_A() {
+    u8 a = getA();
+    setB(a);
+}
+
+// load register B into register C
+// 1 byte, 4t cycles
+void CPU::LD_C_B() {
+    u8 b = getB();
+    setC(b);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_C_C() {
+    // no operation
+}
+
+// 0x4A
+// 1 byte, 4t cycles
+void CPU::LD_C_D() {
+    u8 d = getD();
+    setC(d);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_C_E() {
+    u8 e = getE();
+    setC(e);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_C_H() {
+    u8 h = getH();
+    setC(h);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_C_L() {
+    u8 l = getL();
+    setC(l);
+}
+
+// load byte at address pointed to by HL into register C
+// 1 byte, 8t cycles
+void CPU::LD_C_mHL(Memory& memory) {
+    u8 address = getHL();
+    u8 val = memory.readByte(address);
+    setC(val);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_C_A() {
+    u8 a = getA();
+    setC(a);
+}
+
+// 0x50
+// load register B into register D
+// 1 byte, 4t cycles
+void CPU::LD_D_B() {
+    u8 b = getB();
+    setD(b);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_D_C() {
+    u8 c = getC();
+    setD(c);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_D_D() {
+    // no operation
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_D_E() {
+    u8 e = getE();
+    setD(e);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_D_H() {
+    u8 h = getH();
+    setD(h);
+}
+
+// 0x55
+// 1 byte, 4t cycles
+void CPU::LD_D_L() {
+    u8 l = getL();
+    setD(l);
+}
+
+// 1 byte, 8t cycles
+void CPU::LD_D_mHL(Memory& memory) {
+    u8 address = getHL();
+    u8 val = memory.readByte(address);
+    setD(val);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_D_A() {
+    u8 a = getA();
+    setD(a);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_E_B() {
+    u8 b = getB();
+    setE(b);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_E_C() {
+    u8 c = getC();
+    setE(c);
+}
+
+// 0x5A
+// 1 byte, 4t cycles
+void CPU::LD_E_D() {
+    u8 d = getD();
+    setE(d);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_E_E() {
+    // no operation
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_E_H() {
+    u8 h = getH();
+    setE(h);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_E_L() {
+    u8 l = getL();
+    setE(l);
+}
+
+// 1 byte, 8t cycles
+void CPU::LD_E_mHL(Memory& memory) {
+    u8 address = getHL();
+    u8 val = memory.readByte(address);
+    setE(val);
+}
+
+// 1 byte, 4t cycles
+void CPU::LD_E_A() {
+    u8 a = getA();
+    setE(a);
+}
+
+
 
 
 

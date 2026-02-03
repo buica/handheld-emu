@@ -277,6 +277,7 @@ void CPU::executeInstruction(Memory& memory) {
             break;
 
         case 0x0F: {
+
             RRCA();
             break;
         }
@@ -471,6 +472,134 @@ void CPU::executeInstruction(Memory& memory) {
 
         case 0x3F:
             CCF();
+            break;
+
+        case 0x40:
+            LD_B_B();
+            break;
+
+        case 0x41:
+            LD_B_C();
+            break;
+
+        case 0x42:
+            LD_B_D();
+            break;
+
+        case 0x43:
+            LD_B_E();
+            break;
+
+        case 0x44:
+            LD_B_H();
+            break;
+
+        case 0x45:
+            LD_B_L();
+            break;
+
+        case 0x46:
+            LD_B_mHL(memory);
+            break;
+
+        case 0x47:
+            LD_B_A();
+            break;
+
+        case 0x48:
+            LD_C_B();
+            break;
+
+        case 0x49:
+            LD_C_C();
+            break;
+
+        case 0x4A:
+            LD_C_D();
+            break;
+
+        case 0x4B:
+            LD_C_E();
+            break;
+
+        case 0x4C:
+            LD_C_H();
+            break;
+
+        case 0x4D:
+            LD_C_L();
+            break;
+
+        case 0x4E:
+            LD_C_mHL(memory);
+            break;
+
+        case 0x4F:
+            LD_C_A();
+            break;
+
+        case 0x50:
+            LD_D_B();
+            break;
+
+        case 0x51:
+            LD_D_C();
+            break;
+
+        case 0x52:
+            LD_D_D();
+            break;
+
+        case 0x53:
+            LD_D_E();
+            break;
+
+        case 0x54:
+            LD_D_H();
+            break;
+
+        case 0x55:
+            LD_D_L();
+            break;
+
+        case 0x56:
+            LD_D_mHL(memory);
+            break;
+
+        case 0x57:
+            LD_D_A();
+            break;
+
+        case 0x58:
+            LD_E_B();
+            break;
+
+        case 0x59:
+            LD_E_C();
+            break;
+
+        case 0x5A:
+            LD_E_D();
+            break;
+
+        case 0x5B:
+            LD_E_E();
+            break;
+
+        case 0x5C:
+            LD_E_H();
+            break;
+
+        case 0x5D:
+            LD_E_L();
+            break;
+
+        case 0x5E:
+            LD_E_mHL(memory);
+            break;
+
+        case 0x5F:
+            LD_E_A();
             break;
 
 
