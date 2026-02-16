@@ -161,8 +161,38 @@ private:
     void LD_E_L();
     void LD_E_mHL(Memory& memory);
     void LD_E_A();
-
+    void LD_H_B();
+    void LD_H_C();
+    void LD_H_D();
+    void LD_H_E();
+    void LD_H_H();
+    void LD_H_L();
+    void LD_H_mHL(Memory& memory);
+    void LD_H_A();
+    void LD_L_B();
+    void LD_L_C();
+    void LD_L_D();
+    void LD_L_E();
+    void LD_L_H();
+    void LD_L_L();
+    void LD_L_mHL(Memory& memory);
+    void LD_L_A();
+    void LD_mHL_B(Memory& memory);
+    void LD_mHL_C(Memory& memory);
+    void LD_mHL_D(Memory& memory);
+    void LD_mHL_E(Memory& memory);
+    void LD_mHL_H(Memory& memory);
+    void LD_mHL_L(Memory& memory);
     void HALT();
+    void LD_mHL_A(Memory& memory);
+    void LD_A_B();
+    void LD_A_C();
+    void LD_A_D();
+    void LD_A_E();
+    void LD_A_H();
+    void LD_A_L();
+    void LD_A_mHL(Memory& memory);
+    void LD_A_A();
 
     void RET();
 

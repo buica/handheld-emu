@@ -236,34 +236,30 @@ void CPU::executeInstruction(Memory& memory) {
             DEC_B();
             break;
 
-        case 0x06: {
+        case 0x06:
             LD_B_n8(memory);
             break;
-        }
 
-        case 0x07: {
+        case 0x07:
             RLCA();
             break;
-        }
 
-        case 0x08: {
+        case 0x08:
             LD_mn16_SP(memory);
             break;
-        }
 
-        case 0x09: {
+        case 0x09:
             ADD_HL_BC();
             break;
 
-        }
         case 0x0A:
             LD_A_mBC(memory);
             break;
 
-        case 0x0B: {
+        case 0x0B:
             DEC_BC();
             break;
-        }
+
         case 0x0C:
             INC_C();
             break;
@@ -276,16 +272,13 @@ void CPU::executeInstruction(Memory& memory) {
             LD_C_n8(memory);
             break;
 
-        case 0x0F: {
-
+        case 0x0F:
             RRCA();
             break;
-        }
 
-        case 0x10: {
+        case 0x10:
             STOP();
             break;
-        }
 
         case 0x11:
             LD_DE_n16(memory);
@@ -386,6 +379,7 @@ void CPU::executeInstruction(Memory& memory) {
         case 0x29:
             ADD_HL_HL();
             break;
+
         case 0x2A:
             LD_A_mHLinc(memory);
             break;
@@ -602,9 +596,138 @@ void CPU::executeInstruction(Memory& memory) {
             LD_E_A();
             break;
 
+        case 0x60:
+            LD_H_B();
+            break;
+
+        case 0x61:
+            LD_H_C();
+            break;
+
+        case 0x62:
+            LD_H_D();
+            break;
+
+        case 0x63:
+            LD_H_E();
+            break;
+
+        case 0x64:
+            LD_H_H();
+            break;
+
+        case 0x65:
+            LD_H_L();
+            break;
+
+        case 0x66:
+            LD_H_mHL(memory);
+            break;
+
+        case 0x67:
+            LD_H_A();
+            break;
+
+        case 0x68:
+            LD_L_B();
+            break;
+
+        case 0x69:
+            LD_L_C();
+            break;
+
+        case 0x6A:
+            LD_L_D();
+            break;
+
+        case 0x6B:
+            LD_L_E();
+            break;
+
+        case 0x6C:
+            LD_L_H();
+            break;
+
+        case 0x6D:
+            LD_L_L();
+            break;
+
+        case 0x6E:
+            LD_L_mHL(memory);
+            break;
+
+        case 0x6F:
+            LD_L_A();
+            break;
+
+        case 0x70:
+            LD_mHL_B(memory);
+            break;
+
+        case 0x71:
+            LD_mHL_C(memory);
+            break;
+
+        case 0x72:
+            LD_mHL_D(memory);
+            break;
+
+        case 0x73:
+            LD_mHL_E(memory);
+            break;
+
+        case 0x74:
+            LD_mHL_H(memory);
+            break;
+
+        case 0x75:
+            LD_mHL_L(memory);
+            break;
+
+        case 0x76:
+            HALT();
+            break;
+
+        case 0x77:
+            LD_mHL_A(memory);
+            break;
+
+        case 0x78:
+            LD_A_B();
+            break;
+
+        case 0x79:
+            LD_A_C();
+            break;
+
+        case 0x7A:
+            LD_A_D();
+            break;
+
+        case 0x7B:
+            LD_A_E();
+            break;
+
+        case 0x7C:
+            LD_A_H();
+            break;
+
+        case 0x7D:
+            LD_A_L();
+            break;
+
+        case 0x7E:
+            LD_A_mHL(memory);
+            break;
+
+        case 0x7F:
+            LD_A_A();
+            break;
+
+
+
 
         // HALT
-        // 1 byte, 4t cycles
         case 0x76:
             // enter low power mode until an interrupt occurs
             // for now, just print and exit
