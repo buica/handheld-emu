@@ -724,18 +724,6 @@ void CPU::executeInstruction(Memory& memory) {
             LD_A_A();
             break;
 
-
-
-
-        // HALT
-        case 0x76:
-            // enter low power mode until an interrupt occurs
-            // for now, just print and exit
-            std::cout << "HALT encountered. Exiting." << std::endl;
-            exit(0);
-            break;
-
-
         case 0xC9:
             RET();
             break;

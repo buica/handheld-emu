@@ -5,13 +5,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(EMU_SOURCES
-    # src/system.cpp
+    src/system.cpp
     src/cpu.cpp
     src/memory.cpp
     src/cart.cpp
-    #src/ppu.cpp
+    src/cpu_instructions.cpp
+    # src/ppu.cpp
     # src/io_registers.cpp
-    #src/timer.cpp
+    # src/timer.cpp
 )
 
 add_library(handheld-core STATIC ${EMU_SOURCES})
