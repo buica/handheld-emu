@@ -14,7 +14,7 @@ class Cart {
 public:
     Cart() = default;
     bool load(const std::string& filepath);
-    std::vector<u8>& getRomData();
+    const std::vector<u8>& getRomData() const;
     u8 readByte(u16 address);
 
 

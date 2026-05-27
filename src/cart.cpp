@@ -41,7 +41,7 @@ bool Cart::load(const std::string& filepath) {
 * @brief returns ROM data loaded in memory
 * @return the ROM data vector
 */
-std::vector<u8>& Cart::getRomData() {
+const std::vector<u8>& Cart::getRomData() const {
     return m_rom_data;
 }
 
